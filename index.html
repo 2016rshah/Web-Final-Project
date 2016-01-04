@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Lab 5 - Canvas</title>
+
+        <style>
+          body{
+            text-align:center;
+            background-color:#3d97ca;
+            color:#FFF;
+          }
+          canvas{
+            background-color:white;
+          }
+        </style>
+    </head>
+    <body>
+        <h1>Blow some bubbles!</h1>
+        <canvas id="canvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
+        <br>
+
+        <button id="clear" accesskey="c">Clear the <u>c</u>anvas</button>
+        <button id="undo" accesskey="u"><u>U</u>ndo the last move</button>
+        <button id="replay" accesskey="r"><u>R</u>eplay the history</button>
+
+        <br>
+
+        <script src="click_location.js"></script>
+        <script src="index.js"></script>
+        <script src="keyboard_events.js"></script>
+        <script src="button_clicks.js"></script>
+    </body>
+</html>
