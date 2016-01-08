@@ -57,4 +57,13 @@ document.onkeydown = function(e){
             drawDots()
         }
     }
+    else if(e.keyCode == 69 && e.shiftKey){ //E pressed
+    	connectEdges();
+    }
+    else if(e.keyCode == 67 && e.shiftKey){ //C pressed
+    	clearEdges();
+    }
+    else if(e.keyCode == 84 && e.shiftKey){ //T pressed
+    	toggleEdges();
+    }
 }
