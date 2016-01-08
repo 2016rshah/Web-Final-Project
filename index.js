@@ -1,7 +1,7 @@
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 
-var RADIUS = 20;
+var RADIUS = 10;
 
 var dots = []
 dots.push({x:-50, y:-50, r:RADIUS, c:"red"}) //fix mystery bug when dragging without drawing dot
@@ -11,10 +11,12 @@ var KEY_MAP = {37:"left", 38:"up", 39:"right", 40:"down"}
 // var pastActions = [{type:"create", x: 10, y: 10}, {type:"move", dotIndices:[], dx: 10, dy: 10}]
 var pastActions = []
 
+//clears the canvas
 function clearC(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+//draws new dot
 function drawDots(){
     for(var i = 0; i<dots.length; i++){
         if(dots[i].c == "blue"){
@@ -30,6 +32,7 @@ function drawDots(){
     }
 }
 
+//draw rectangle while dragging
 function drawTwoPointRect(l1, l2){
     var dx = l2.x - l1.x
     var dy = l2.y - l1.y
@@ -37,6 +40,7 @@ function drawTwoPointRect(l1, l2){
     ctx.stroke();
 }
 
+//make selected in rect red
 function convertDots(startLoc, finalLoc){
     var xi = startLoc.x
     var xf = finalLoc.x
@@ -77,7 +81,6 @@ function moveDots(direction){
 }
 
 function moveSelected(dx, dy){
-
     for(var i = 0; i<dots.length; i++){
         if(dots[i].c == "red"){
             dots[i].x += dx
@@ -142,7 +145,6 @@ function redoMove(mI){
     }
 }
 
-
 var startLoc = {}
 var currLoc = {}
 var finalLoc = {}
@@ -155,7 +157,6 @@ var ctrlPressed = false;
 var maxDist = 0
 
 var originallyBlue = true
-
 
 //toggle ability with control click
 

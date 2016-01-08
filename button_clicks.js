@@ -25,3 +25,9 @@ document.getElementById("replay").onclick = function(){
     dots = []
     redoMove(0)
 }
+
+document.getElementById("sequence").onclick = function(){
+}
+
+document.getElementById("spoke").onclick = function(){
+}
