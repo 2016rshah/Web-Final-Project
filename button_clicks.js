@@ -27,7 +27,19 @@ document.getElementById("replay").onclick = function(){
 }
 
 document.getElementById("sequence").onclick = function(){
+    if(sequenceMode){
+        sequenceMode = false;
+    }
+    else{
+    	sequenceMode = true;
+    }
 }
 
 document.getElementById("spoke").onclick = function(){
+    if(edgeMode){
+    	edgeMode = false;
+    }
+    else{
+    	edgeMode = true;
+    }
 }

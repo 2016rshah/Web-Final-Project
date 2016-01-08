@@ -159,6 +159,10 @@ var maxDist = 0
 
 var originallyBlue = true
 
+//True if you are in the mode, false otherwise
+var sequenceMode = false;
+var edgeMode = false;
+
 //toggle ability with control click
 
 c.onmousedown = function(e){
@@ -178,7 +182,6 @@ c.onmousedown = function(e){
 
 }
 c.onmousemove = function(e){
-
     clearC()
     var coords = canvas.relMouseCoords(e);
 
