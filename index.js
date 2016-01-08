@@ -4,12 +4,15 @@ var ctx = c.getContext("2d");
 var RADIUS = 10;
 
 var dots = []
-dots.push({x:-50, y:-50, r:RADIUS, c:"red"}) //fix mystery bug when dragging without drawing dot
+dots.push({x:-50, y:-50, r:RADIUS, c:"black"}) //fix mystery bug when dragging without drawing dot
 
 var KEY_MAP = {37:"left", 38:"up", 39:"right", 40:"down"}
 
 // var pastActions = [{type:"create", x: 10, y: 10}, {type:"move", dotIndices:[], dx: 10, dy: 10}]
 var pastActions = []
+
+//keep track of edge objects edges = [(dot1: 1, dot2: 2, c: "red")]
+var edges = [];
 
 //clears the canvas
 function clearC(){
