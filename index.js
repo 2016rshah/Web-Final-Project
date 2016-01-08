@@ -90,9 +90,10 @@ function moveSelected(dx, dy){
 }
 
 function moveSpecific(arr, dx, dy){
+    // console.log(arr)
     for(var i = 0; i<arr.length; i++){
-        dots[arr[i]].x += dx
-        dots[arr[i]].y += dy
+        dots[arr[i]-1].x += dx
+        dots[arr[i]-1].y += dy
     }
 
 }
