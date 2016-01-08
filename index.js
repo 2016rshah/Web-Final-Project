@@ -27,7 +27,7 @@ function drawDots(){
         }
         // ctx.fillStyle = dots[i].c
         ctx.beginPath();
-        ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0,2*Math.PI)
+        ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0,2*Math.PI, true);
         ctx.fill()
     }
 }
