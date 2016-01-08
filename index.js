@@ -89,13 +89,20 @@ function moveSelected(dx, dy){
     }
 }
 
-function moveSpecific(arr, dx, dy){
+function moveSpecific(arr, dx, dy, type){
     // console.log(arr)
-    for(var i = 0; i<arr.length; i++){
-        dots[arr[i]-1].x += dx
-        dots[arr[i]-1].y += dy
+    if(type == "replay"){
+        for(var i = 0; i<arr.length; i++){
+            dots[arr[i]-1].x += dx
+            dots[arr[i]-1].y += dy
+        }
     }
-
+    else{
+        for(var i = 0; i<arr.length; i++){
+            dots[arr[i]].x += dx
+            dots[arr[i]].y += dy
+        } 
+    }
 }
 
 function findSelectedDot(loc){
@@ -134,7 +141,7 @@ function redoMove(mI){
     }
     else if(pastActions[mI].type == "move"){
         
-        moveSpecific(pastActions[mI].dotIndices, pastActions[mI].dx, pastActions[mI].dy)
+        moveSpecific(pastActions[mI].dotIndices, pastActions[mI].dx, pastActions[mI].dy, "replay")
     }
     drawDots()
 
