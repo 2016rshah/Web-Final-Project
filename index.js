@@ -11,12 +11,18 @@ var KEY_MAP = {37:"left", 38:"up", 39:"right", 40:"down"}
 // var pastActions = [{type:"create", x: 10, y: 10}, {type:"move", dotIndices:[], dx: 10, dy: 10}]
 var pastActions = []
 
-//keep track of edge objects edges = [(dot1: 1, dot2: 2, c: "red")]
+//keep track of edge objects edges = [(di1: 1, di2: 2, c: "red")]. di = dot index corresponding to dot array
 var edges = [];
 
 //clears the canvas
 function clearC(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+//calls drawDots and drawEdges
+function drawCanvas(){
+	drawDots();
+	drawEdges();
 }
 
 //draws new dot
@@ -33,6 +39,16 @@ function drawDots(){
         ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0,2*Math.PI, true);
         ctx.fill()
     }
+}
+
+//draws new edges
+function drawEdges(){
+	for(var i = 0; i < edges.length; i++){
+		ctx.beginPath();
+		ctx.moveTo(dots[edges[i].di1].x, dots[edges[i].di1].y);
+		ctx.lineTo(dots[edges[i].di2].y, dots[edges[i].di2].y);
+		ctx.stroke();
+	}
 }
 
 //draw rectangle while dragging
@@ -146,7 +162,7 @@ function redoMove(mI){
         
         moveSpecific(pastActions[mI].dotIndices, pastActions[mI].dx, pastActions[mI].dy, "replay")
     }
-    drawDots()
+    drawCanvas();
 
     if(mI+1 < pastActions.length){
         window.setTimeout(function(){
@@ -219,7 +235,7 @@ c.onmousemove = function(e){
         
     }
 
-    drawDots()
+    drawCanvas();
 }
 c.onmouseup = function(e){
     var coords = canvas.relMouseCoords(e);
@@ -243,7 +259,7 @@ c.onmouseup = function(e){
         pastActions.push({"type":"move", "dotIndices":selected, "dx": dx, "dy": dy})
         console.log(pastActions)
 
-        drawDots()
+        drawCanvas()
     }
     else{
         if(maxDist < 75){ //just clicked
@@ -258,7 +274,7 @@ c.onmouseup = function(e){
             pastActions.push({type:"create", x: coords.x, y: coords.y})
             console.log(pastActions)
 
-            drawDots()
+            drawCanvas()
         }
         else{ //dragged over
             clearC()
@@ -269,7 +285,7 @@ c.onmouseup = function(e){
             }
 
             convertDots(startLoc, finalLoc)
-            drawDots()
+            drawCanvas()
         }
     }
     //reset everything

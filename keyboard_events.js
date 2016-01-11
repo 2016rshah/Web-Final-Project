@@ -2,7 +2,7 @@ document.onkeydown = function(e){
     if(e.keyCode == 27){ //escape
         clearC()
         resetDots()
-        drawDots()
+        drawCanvas()
     }
     else if(KEY_MAP[e.keyCode]){
         clearC()
@@ -29,7 +29,7 @@ document.onkeydown = function(e){
         pastActions.push({"type":"move", "dots":selected, "dx": dx, "dy": dy})
         console.log(pastActions)
 
-        drawDots()
+        drawCanvas()
     }
     else if(e.keyCode == 189){ //minus pressed
         if(e.altKey){
@@ -41,7 +41,7 @@ document.onkeydown = function(e){
                 if(dots[i].c == "red")
                     dots[i].r--;
             }
-            drawDots()
+            drawCanvas()
         }
     }
     else if(e.keyCode == 187 && e.shiftKey){ //plus pressed
@@ -54,7 +54,7 @@ document.onkeydown = function(e){
                 if(dots[i].c == "red")
                     dots[i].r++;
             }
-            drawDots()
+            drawCanvas()
         }
     }
     else if(e.keyCode == 69 && e.shiftKey){ //E pressed

@@ -17,7 +17,7 @@ document.getElementById("undo").onclick = function(){
         moveSpecific(lastAction.dotIndices, -lastAction.dx, -lastAction.dy)
     }
 
-    drawDots()
+    drawCanvas()
 }
 
 document.getElementById("replay").onclick = function(){
