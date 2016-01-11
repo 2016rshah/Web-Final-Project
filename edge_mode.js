@@ -17,6 +17,7 @@ function connectEdges(){
 			edges.push({di1:i, di2:j, c:"red"});
 		}
 	}
+	console.log(edges);
 }
 
 function clearEdges(){
