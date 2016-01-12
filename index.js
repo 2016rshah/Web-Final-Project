@@ -46,7 +46,7 @@ function drawEdges(){
 	for(var i = 0; i < edges.length; i++){
 		ctx.beginPath();
 		ctx.moveTo(dots[edges[i].di1].x, dots[edges[i].di1].y);
-		ctx.lineTo(dots[edges[i].di2].y, dots[edges[i].di2].y);
+		ctx.lineTo(dots[edges[i].di2].x, dots[edges[i].di2].y);
 		ctx.closePath();
 		ctx.stroke();
 	}
