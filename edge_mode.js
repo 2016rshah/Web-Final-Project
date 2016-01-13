@@ -22,7 +22,7 @@ function connectEdges(){
 				//ctx.stroke();
 	
 				//adds to edge object array
-				edges.push({di1:selectedDotsIndices[i], di2:selectedDotsIndices[j], c:"red"});
+				edges.push({di1:selectedDotsIndices[i], di2:selectedDotsIndices[j], c:"red", size:EDGEWIDTH});
 			}
 		}
 	}
