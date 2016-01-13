@@ -1,0 +1,26 @@
+body{
+	font: 13px/20px 'Lucida Grande', Tahoma, Verdana, sans-serif;
+	color: #404040;
+	background: #0ca3d2;
+}
+
+.container{
+	margin: 80px auto;
+	width: 640px;
+}
+
+.login{
+	position: relative;
+	margin: 0 auto;
+	padding: 20px 20px 20px;
+	width: 310px;
+	background: white;
+	border-radius: 3px;
+	@include box-shadow(0 0 200px rgba(white, .5), 0 1px 2px rgba(black, .3));
+}
+
+h1{
+	margin: -20px -20px 21px;
+	:wq
+
+}
