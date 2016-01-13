@@ -29,7 +29,7 @@ function drawCanvas(){
 function drawDots(){
     for(var i = 0; i<dots.length; i++){
         if(dots[i].c == "blue"){
-            ctx.fillStyle = "#3d97ca"
+            ctx.fillStyle = "#567"
         }
         else{
             ctx.fillStyle = "#c20030"
