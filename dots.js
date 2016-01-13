@@ -2,6 +2,9 @@ var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 
 var RADIUS = 10;
+var EDGEWIDTH = 3;
+var BLUE = "#567";
+var RED = "#c20030";
 
 var dots = []
 dots.push({x:-50, y:-50, r:RADIUS, c:"black"}) //fix mystery bug when dragging without drawing dot
@@ -29,10 +32,10 @@ function drawCanvas(){
 function drawDots(){
     for(var i = 0; i<dots.length; i++){
         if(dots[i].c == "blue"){
-            ctx.fillStyle = "#567"
+            ctx.fillStyle = BLUE;
         }
         else{
-            ctx.fillStyle = "#c20030"
+            ctx.fillStyle = RED;
         }
         // ctx.fillStyle = dots[i].c
         ctx.beginPath();
@@ -47,6 +50,13 @@ function drawEdges(){
 		ctx.beginPath();
 		ctx.moveTo(dots[edges[i].di1].x, dots[edges[i].di1].y);
 		ctx.lineTo(dots[edges[i].di2].x, dots[edges[i].di2].y);
+		if(edges[i].c == "blue"){
+			ctx.strokeStyle = BLUE;
+		}
+		else{
+			ctx.strokeStyle = RED;
+		}
+		ctx.lineWidth = edges[i].size;
 		ctx.closePath();
 		ctx.stroke();
 	}
