@@ -58,12 +58,18 @@ document.onkeydown = function(e){
         }
     }
     else if(e.keyCode == 69 && e.shiftKey){ //E pressed
-    	connectEdges();
+    	if(edgeMode){
+    		connectEdges();
+	}
     }
     else if(e.keyCode == 67 && e.shiftKey){ //C pressed
-    	clearEdges();
+    	if(edgeMode){
+    		clearEdges();
+	}
     }
     else if(e.keyCode == 84 && e.shiftKey){ //T pressed
-    	toggleEdges();
+    	if(edgeMode){
+    		toggleEdges();
+	}
     }
 }
