@@ -57,8 +57,9 @@ function drawEdges(){
 			ctx.strokeStyle = RED;
 		}
 		ctx.lineWidth = edges[i].size;
-		ctx.closePath();
+		ctx.setLineDash([0]);
 		ctx.stroke();
+		ctx.closePath();
 	}
 }
 
@@ -66,8 +67,14 @@ function drawEdges(){
 function drawTwoPointRect(l1, l2){
     var dx = l2.x - l1.x
     var dy = l2.y - l1.y
+    clearC();
+    drawCanvas();
+    ctx.beginPath();
+    ctx.strokeStyle = BLUE;
+    ctx.setLineDash([5]);
     ctx.rect(l1.x, l1.y, dx, dy);
     ctx.stroke();
+    ctx.closePath();
 }
 
 //make selected in rect red
