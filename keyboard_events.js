@@ -73,4 +73,10 @@ document.onkeydown = function(e){
     		toggleEdges();
 	}
     }
+    else if(e.keyCode == 81){ //q pressed
+    	if(edgeMode){
+		console.log("exited edge mode");
+		edgeMode = false;
+	}
+    }
 }
