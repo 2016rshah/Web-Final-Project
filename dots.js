@@ -2,7 +2,7 @@ var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 
 var RADIUS = 10;
-var EDGEWIDTH = 3;
+var EDGEWIDTH = 5;
 var BLUE = "#567";
 var RED = "#c20030";
 
