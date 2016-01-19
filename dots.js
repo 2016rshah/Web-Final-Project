@@ -160,6 +160,7 @@ function findSelectedDot(loc){
                 // console.log(ctrlPressed)
                 if(!ctrlPressed && dots[i].c == "blue"){
                     resetDots()
+		    resetEdges();
                 } //these two if statements don't work together
 
 
@@ -317,6 +318,7 @@ c.onmouseup = function(e){
 
             if(!ctrlPressed){
                 resetDots()
+		resetEdges();
             }
 
             dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"}) 
@@ -332,6 +334,7 @@ c.onmouseup = function(e){
             //control key part of lab
             if(!ctrlPressed){
                 resetDots()
+		resetEdges();
             }
 
             convertDots(startLoc, finalLoc)
