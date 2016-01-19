@@ -285,6 +285,8 @@ c.onmousemove = function(e){
 
         currLoc = {x:coords.x, y:coords.y}
     }
+    else if(selectedLine){
+    }
     else if(drawing){ //selecting dots\
 
         currLoc = {x:coords.x, y:coords.y}
