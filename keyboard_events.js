@@ -79,4 +79,7 @@ document.onkeydown = function(e){
 		edgeMode = false;
 	}
     }
+    else if(e.keyCode == 46){ //delete key pressed
+    	deleteSelectedEdges();
+    }
 }

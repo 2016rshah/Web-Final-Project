@@ -108,6 +108,19 @@ function resetEdges(){
 	}
 }
 
+//deletes the edges that are selected
+function deleteSelectedEdges(){
+	for(var i = 0; i < edges.length; i++){
+		if(edges[i].c == "red"){
+			edges.splice(i, 1);
+			i--;
+		}
+	}
+	console.log(edges);
+	clearC();
+	drawCanvas();
+}
+
 function moveDots(direction){
     var m = 1;
     for(var i = 0; i<dots.length; i++){

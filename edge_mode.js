@@ -94,3 +94,4 @@ function toggleEdges(){
 	drawCanvas();
 	
 }
+
