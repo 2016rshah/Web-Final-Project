@@ -14,7 +14,7 @@ var KEY_MAP = {37:"left", 38:"up", 39:"right", 40:"down"}
 // var pastActions = [{type:"create", x: 10, y: 10}, {type:"move", dotIndices:[], dx: 10, dy: 10}]
 var pastActions = []
 
-//keep track of edge objects edges = [(di1: 1, di2: 2, c: "red")]. di = dot index corresponding to dot array
+//keep track of edge objects edges = [(di1: 1, di2: 2, c: "red", size: EDGEWIDTH)]. di = dot index corresponding to dot array
 var edges = [];
 
 //clears the canvas
@@ -101,6 +101,13 @@ function resetDots(){
         dots[i].c = "blue"
     }
 }
+
+function resetEdges(){
+	for(var i = 0; i < edges.length; i++){
+		edges[i].c = "blue";
+	}
+}
+
 function moveDots(direction){
     var m = 1;
     for(var i = 0; i<dots.length; i++){
@@ -144,6 +151,7 @@ function moveSpecific(arr, dx, dy, type){
 
 function findSelectedDot(loc){
     for(var i = 0; i<dots.length; i++){
+    //SHOULD PROBABLY MODIFY LATER SO IT IS COMPATIBLE WITH CHANGING RADII
         if(loc.x > dots[i].x - RADIUS && loc.x < dots[i].x + RADIUS){ //within x threshold
             if(loc.y > dots[i].y - RADIUS && loc.y < dots[i].y + RADIUS){ //within y threshold
                 // if(ctrlPressed){
@@ -170,6 +178,22 @@ function findSelectedDot(loc){
     return false
 }
 
+function findSelectedLine(loc){
+	//[(di1: 1, di2: 2, c: "red")]
+	for(var i = 0; i < edges.length; i++){
+		var slope = (dots[edges[i].di1].y - dots[edges[i].di2].y) / (dots[edges[i].di1].x - dots[edges[i].di2].x);
+		var leftHandSide = loc.y - dots[edges[i].di1].y;
+		var rightHandSide = slope * (loc.x - dots[edges[i].di1].x);
+		if((leftHandSide > rightHandSide - EDGEWIDTH && leftHandSide < rightHandSide + EDGEWIDTH) || (rightHandSide > leftHandSide - EDGEWIDTH && rightHandSide < leftHandSide + EDGEWIDTH)){
+			edges[i].c = "red";
+			return edges[i];
+		}
+
+
+	}
+	return false;
+}
+
 function redoMove(mI){
     clearC()
     if(pastActions[mI].type == "create"){
@@ -194,6 +218,7 @@ var startLoc = {}
 var currLoc = {}
 var finalLoc = {}
 var selectedDot = false
+var selectedLine = false;
 
 var drawing = false;
 
@@ -220,8 +245,10 @@ c.onmousedown = function(e){
         ctrlPressed = true;
     }
 
-    selectedDot = findSelectedDot(startLoc)
-
+    selectedDot = findSelectedDot(startLoc);
+    if(!selectedDot){
+    	selectedLine = findSelectedLine(startLoc);
+    }
     
 
 }
@@ -279,6 +306,11 @@ c.onmouseup = function(e){
 
         drawCanvas()
     }
+    else if(selectedLine){
+    	console.log("selected line");
+    	clearC();
+	drawCanvas();
+    }
     else{
         if(maxDist < 75){ //just clicked
             clearC()
@@ -313,6 +345,7 @@ c.onmouseup = function(e){
     currLoc = {}
     finalLoc = {}
     selectedDot = false
+    selectedLine = false;
     maxDist = 0
     originallyBlue = true;
 }

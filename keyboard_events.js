@@ -2,6 +2,7 @@ document.onkeydown = function(e){
     if(e.keyCode == 27){ //escape
         clearC()
         resetDots()
+	resetEdges();
         drawCanvas()
     }
     else if(KEY_MAP[e.keyCode]){
