@@ -194,16 +194,26 @@ function findSelectedDot(loc){
 
 function findSelectedLine(loc){
 	//[(di1: 1, di2: 2, c: "red")]
+	
+	//NEEDS TO BE FIXED STILL
+	//--> see if contained within two points
+	//if two sides are the same sign, then take the abs val
 	for(var i = 0; i < edges.length; i++){
-		var slope = (dots[edges[i].di1].y - dots[edges[i].di2].y) / (dots[edges[i].di1].x - dots[edges[i].di2].x);
-		var leftHandSide = loc.y - dots[edges[i].di1].y;
-		var rightHandSide = slope * (loc.x - dots[edges[i].di1].x);
-		if((leftHandSide > rightHandSide - EDGEWIDTH && leftHandSide < rightHandSide + EDGEWIDTH) || (rightHandSide > leftHandSide - EDGEWIDTH && rightHandSide < leftHandSide + EDGEWIDTH)){
+		var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
+		var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
+		var leftHandSide = (loc.y - dots[edges[i].di1].y) * slopebot;
+		var rightHandSide = (loc.x - dots[edges[i].di1].x) * slopetop;
+		console.log("edge index: " + i);
+		console.log("leftHandSide: " + leftHandSide);
+		console.log("rightHandSide: " + rightHandSide);
+		//console.log("slope: " + slope);
+		if((leftHandSide > rightHandSide * 0.95 && leftHandSide < rightHandSide * 1.05) || (rightHandSide > leftHandSide * 0.95 && rightHandSide < leftHandSide * 1.05)){
+			console.log("leftHandSide: " + leftHandSide);
+			console.log("rightHandSide: " + rightHandSide);
+
 			edges[i].c = "red";
 			return edges[i];
 		}
-
-
 	}
 	return false;
 }
