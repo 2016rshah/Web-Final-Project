@@ -192,28 +192,66 @@ function findSelectedDot(loc){
     return false
 }
 
+//STILL DOES NOT QUITE WORK FOR WHEN THE LINE IS CLOSE TO VERTICAL OR HORIZONTAL
 function findSelectedLine(loc){
 	//[(di1: 1, di2: 2, c: "red")]
 	
-	//NEEDS TO BE FIXED STILL
-	//--> see if contained within two points
-	//if two sides are the same sign, then take the abs val
 	for(var i = 0; i < edges.length; i++){
-		var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
-		var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
-		var leftHandSide = (loc.y - dots[edges[i].di1].y) * slopebot;
-		var rightHandSide = (loc.x - dots[edges[i].di1].x) * slopetop;
-		console.log("edge index: " + i);
-		console.log("leftHandSide: " + leftHandSide);
-		console.log("rightHandSide: " + rightHandSide);
-		//console.log("slope: " + slope);
-		if((leftHandSide > rightHandSide * 0.95 && leftHandSide < rightHandSide * 1.05) || (rightHandSide > leftHandSide * 0.95 && rightHandSide < leftHandSide * 1.05)){
+		if(locationIsWithinEdgeBounds(loc, edges[i])){
+			var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
+			var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
+			var leftHandSide = (loc.y - dots[edges[i].di1].y) * slopebot;
+			var rightHandSide = (loc.x - dots[edges[i].di1].x) * slopetop;
+			console.log("edge index: " + i);
 			console.log("leftHandSide: " + leftHandSide);
 			console.log("rightHandSide: " + rightHandSide);
-
-			edges[i].c = "red";
-			return edges[i];
+			//console.log("slope: " + slope);
+			//
+			
+			//if both are negative make them positive
+			if(leftHandSide < 0 && rightHandSide < 0){
+				leftHandSide = Math.abs(leftHandSide);
+				rightHandSide = Math.abs(rightHandSide);
+			}
+			if((leftHandSide > rightHandSide * 0.90 && leftHandSide < rightHandSide * 1.10) || (rightHandSide > leftHandSide * 0.90 && rightHandSide < leftHandSide * 1.10)){
+				console.log("leftHandSide: " + leftHandSide);
+				console.log("rightHandSide: " + rightHandSide);
+	
+				edges[i].c = "red";
+				return edges[i];
+			}
 		}
+	}
+	return false;
+}
+
+function locationIsWithinEdgeBounds(loc, edgeElement){
+	//di1 to the upper right
+	if(dots[edgeElement.di1].x >= dots[edgeElement.di2].x && dots[edgeElement.di1].y >= dots[edgeElement.di2].y){
+		if(loc.x >= dots[edgeElement.di2].x && loc.x <= dots[edgeElement.di1].x && loc.y >= dots[edgeElement.di2].y && loc.y <= dots[edgeElement.di1].y){
+			return true;
+		}
+	}
+	//di1 to the upper left
+	else if(dots[edgeElement.di1].x <= dots[edgeElement.di2].x && dots[edgeElement.di1].y >= dots[edgeElement.di2].y){
+		if(loc.x <= dots[edgeElement.di2].x && loc.x >= dots[edgeElement.di1].x && loc.y >= dots[edgeElement.di2].y && loc.y <= dots[edgeElement.di1].y){
+			return true;
+		}
+		
+	}
+	//di1 to the lower left
+	else if(dots[edgeElement.di1].x <= dots[edgeElement.di2].x && dots[edgeElement.di1].y <= dots[edgeElement.di2].y){
+		if(loc.x <= dots[edgeElement.di2].x && loc.x >= dots[edgeElement.di1].x && loc.y <= dots[edgeElement.di2].y && loc.y >= dots[edgeElement.di1].y){
+			return true;
+		}
+
+	}
+	//di1 to the lower right
+	else if(dots[edgeElement.di1].x >= dots[edgeElement.di2].x && dots[edgeElement.di1].y <= dots[edgeElement.di2].y){
+		if(loc.x >= dots[edgeElement.di2].x && loc.x <= dots[edgeElement.di1].x && loc.y <= dots[edgeElement.di2].y && loc.y >= dots[edgeElement.di1].y){
+			return true;
+		}
+
 	}
 	return false;
 }
