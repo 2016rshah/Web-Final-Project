@@ -48,8 +48,13 @@ function drawDots(){
 function drawEdges(){
 	for(var i = 0; i < edges.length; i++){
 		ctx.beginPath();
-		ctx.moveTo(dots[edges[i].di1].x, dots[edges[i].di1].y);
-		ctx.lineTo(dots[edges[i].di2].x, dots[edges[i].di2].y);
+		if(edges[i].curve == "y"){
+			ctx.bezierCurveTo(dots[edges[i].di1].x, dots[edges[i].di1].y, edges[i].curvex, edges[i].curvey, dots[edges[i].di2].x, dots[edges[i].di2].y);
+		}
+		else{
+			ctx.moveTo(dots[edges[i].di1].x, dots[edges[i].di1].y);
+			ctx.lineTo(dots[edges[i].di2].x, dots[edges[i].di2].y);
+		}
 		if(edges[i].c == "blue"){
 			ctx.strokeStyle = BLUE;
 		}
@@ -322,26 +327,27 @@ c.onmousemove = function(e){
     maxDist = (dist>maxDist) ? dist : maxDist
 
     if(selectedDot){ //dragging a dot
-
         if(currLoc.x && currLoc.y){
             var dx = coords.x - currLoc.x
             var dy = coords.y - currLoc.y
             moveSelected(dx, dy)
-            
-            
         }
-
         currLoc = {x:coords.x, y:coords.y}
     }
-    else if(selectedLine){
+    else if(selectedLine){ //dragging a line to produce a curve
+        currLoc = {x:coords.x, y:coords.y}
+    	if(currLoc.x && currLoc.y){
+    		var indexOfLine = edges.indexOf(selectedLine);
+		//console.log(indexOfLine);
+		edges[indexOfLine].curve = "y";
+		edges[indexOfLine].curvex = currLoc.x;
+		edges[indexOfLine].curvey = currLoc.y;
+		console.log(edges[indexOfLine]);
+    	}
     }
     else if(drawing){ //selecting dots\
-
         currLoc = {x:coords.x, y:coords.y}
-
         drawTwoPointRect(startLoc, currLoc)
-
-        
     }
 
     drawCanvas();
