@@ -43,3 +43,11 @@ document.getElementById("spoke").onclick = function(){
     	edgeMode = true;
     }
 }
+
+document.getElementById("addProperty").onclick = function(){
+	console.log("adding option to select...");
+}
+
+document.getElementById("setProperty").onclick = function(){
+	console.log("setting property...");
+}
