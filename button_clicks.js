@@ -57,4 +57,11 @@ document.getElementById("addProperty").onclick = function(){
 
 document.getElementById("setProperty").onclick = function(){
 	console.log("setting property...");
+
+	var propertyToAdd = document.getElementById("chooseProperty").value;
+	var addToDotOrEdge = document.getElementById("dotOrEdge").value;
+	var propertyValueAdded = document.getElementById("propertyValue").value;
+
+	console.log(propertyToAdd + " " + addToDotOrEdge + " " + propertyValueAdded);
+	//make sure to always uncapitalize first letter, in case it is capitalized at this point.
 }
