@@ -46,6 +46,10 @@ document.getElementById("spoke").onclick = function(){
 
 document.getElementById("addProperty").onclick = function(){
 	console.log("adding option to select...");
+	var newProp = document.getElementById("newProperty").value;
+	var option = document.createElement("option");
+	option.text = newProp;
+	(document.getElementById("chooseProperty")).add(option);
 }
 
 document.getElementById("setProperty").onclick = function(){
