@@ -62,6 +62,32 @@ document.getElementById("setProperty").onclick = function(){
 	var addToDotOrEdge = document.getElementById("dotOrEdge").value;
 	var propertyValueAdded = document.getElementById("propertyValue").value;
 
-	console.log(propertyToAdd + " " + addToDotOrEdge + " " + propertyValueAdded);
-	//make sure to always uncapitalize first letter, in case it is capitalized at this point.
+	document.getElementById("chooseProperty").value = '';
+	document.getElementById("dotOrEdge").value = '';
+	document.getElementById("propertyValue").value = '';
+	
+	//uncapitalizing first letter in propertyToAdd
+	propertyToAdd = propertyToAdd.charAt(0).toLowerCase() + propertyToAdd.slice(1);
+	
+	//add property to dots or edges that are selected
+	
+	if(addToDotOrEdge == "dot"){
+		for(var i = 0; i < dots.length; i++){
+			if(dots[i].c == "red"){
+				dots[i][propertyToAdd] = propertyValueAdded;
+				//console.log(dots[i]);
+			}
+		}
+	}
+	else{
+		for(var i = 0; i < edges.length; i++){
+			if(edges[i].c == "red"){
+				edges[i][propertyToAdd] = propertyValueAdded;
+				console.log(edges[i]);
+			}
+		}
+	}
+
+	clearC();
+	drawCanvas();
 }
