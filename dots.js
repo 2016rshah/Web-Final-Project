@@ -176,6 +176,8 @@ function findSelectedDot(loc){
                 //     resetDots()
                 // }
                 // console.log(ctrlPressed)
+
+
                 if(!ctrlPressed && dots[i].c == "blue"){
                     resetDots()
 		    resetEdges();
@@ -195,6 +197,19 @@ function findSelectedDot(loc){
         }
     }
     return false
+}
+
+//Basically same function as above, but does not change the dot colors. Fixes bug
+function mouseOverDot(loc){
+    for(var i = 0; i<dots.length; i++){
+    //SHOULD PROBABLY MODIFY LATER SO IT IS COMPATIBLE WITH CHANGING RADII
+        if(loc.x > dots[i].x - RADIUS && loc.x < dots[i].x + RADIUS){ //within x threshold
+            if(loc.y > dots[i].y - RADIUS && loc.y < dots[i].y + RADIUS){ //within y threshold
+                return dots[i];
+            }
+        }
+    }
+    return false;
 }
 
 //STILL DOES NOT QUITE WORK FOR WHEN THE LINE IS CLOSE TO VERTICAL OR HORIZONTAL
@@ -261,6 +276,15 @@ function locationIsWithinEdgeBounds(loc, edgeElement){
 	return false;
 }
 
+function displayDotProperties(coordinates){
+	ctx.font = "50px serif";
+	ctx.fillStyle = "#FF0000";
+	ctx.fillText("Hello", coordinates.x, coordinates.y);
+}
+
+function displayEdgeProperties(coordinates){
+}
+
 function redoMove(mI){
     clearC()
     if(pastActions[mI].type == "create"){
@@ -320,11 +344,20 @@ c.onmousedown = function(e){
 
 }
 c.onmousemove = function(e){
-    clearC()
+    clearC();
     var coords = canvas.relMouseCoords(e);
 
     var dist = Math.pow(startLoc.x - currLoc.x, 2) + Math.pow(startLoc.y - currLoc.y, 2)
     maxDist = (dist>maxDist) ? dist : maxDist
+
+    //check to see if mouse is over a dot or edge, then display text box with properties
+    
+    if(mouseOverDot(coords)){
+    	displayDotProperties(coords);
+    }
+    else if(findSelectedLine(coords)){
+    	displayEdgeProperties(coords);
+    }
 
     if(selectedDot){ //dragging a dot
         if(currLoc.x && currLoc.y){
@@ -349,7 +382,6 @@ c.onmousemove = function(e){
         currLoc = {x:coords.x, y:coords.y}
         drawTwoPointRect(startLoc, currLoc)
     }
-
     drawCanvas();
 }
 c.onmouseup = function(e){
