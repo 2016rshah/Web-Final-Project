@@ -245,6 +245,29 @@ function findSelectedLine(loc){
 	return false;
 }
 
+//Basically same function as above, but does not change dot color
+function mouseOverEdge(loc){
+	for(var i = 0; i < edges.length; i++){
+		if(locationIsWithinEdgeBounds(loc, edges[i])){
+			var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
+			var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
+			var leftHandSide = (loc.y - dots[edges[i].di1].y) * slopebot;
+			var rightHandSide = (loc.x - dots[edges[i].di1].x) * slopetop;
+
+			if(leftHandSide < 0 && rightHandSide < 0){
+				leftHandSide = Math.abs(leftHandSide);
+				rightHandSide = Math.abs(rightHandSide);
+			}
+			if((leftHandSide > rightHandSide * 0.90 && leftHandSide < rightHandSide * 1.10) || (rightHandSide > leftHandSide * 0.90 && rightHandSide < leftHandSide * 1.10)){
+	
+				return edges[i];
+			}
+		}
+	}
+	return false;
+
+}
+
 function locationIsWithinEdgeBounds(loc, edgeElement){
 	//di1 to the upper right
 	if(dots[edgeElement.di1].x >= dots[edgeElement.di2].x && dots[edgeElement.di1].y >= dots[edgeElement.di2].y){
@@ -283,6 +306,9 @@ function displayDotProperties(coordinates){
 }
 
 function displayEdgeProperties(coordinates){
+	ctx.font = "50px serif";
+	ctx.fillStyle = "#FF0000";
+	ctx.fillText("Edge Hello", coordinates.x, coordinates.y);
 }
 
 function redoMove(mI){
@@ -355,7 +381,7 @@ c.onmousemove = function(e){
     if(mouseOverDot(coords)){
     	displayDotProperties(coords);
     }
-    else if(findSelectedLine(coords)){
+    else if(mouseOverEdge(coords)){
     	displayEdgeProperties(coords);
     }
 
