@@ -299,16 +299,23 @@ function locationIsWithinEdgeBounds(loc, edgeElement){
 	return false;
 }
 
-function displayDotProperties(coordinates){
-	ctx.font = "50px serif";
+function displayDotProperties(coordinates, displayingDot){
+	ctx.font = "10px serif";
 	ctx.fillStyle = "#FF0000";
-	ctx.fillText("Hello", coordinates.x, coordinates.y);
+	ctx.fillText("x: " + displayingDot.x, coordinates.x + 10, coordinates.y);
+	ctx.fillText("y: " + displayingDot.y, coordinates.x + 10, coordinates.y + 10);
+	ctx.fillText("r: " + displayingDot.r, coordinates.x + 10, coordinates.y + 20);
+	ctx.fillText("c: " + displayingDot.c, coordinates.x + 10, coordinates.y + 30);
 }
 
-function displayEdgeProperties(coordinates){
-	ctx.font = "50px serif";
+function displayEdgeProperties(coordinates, displayingEdge){
+	ctx.font = "10px serif";
 	ctx.fillStyle = "#FF0000";
-	ctx.fillText("Edge Hello", coordinates.x, coordinates.y);
+	ctx.fillText("d1: " + displayingEdge.di1, coordinates.x + 10, coordinates.y);
+	ctx.fillText("d2: " + displayingEdge.di2, coordinates.x + 10, coordinates.y + 10);
+	ctx.fillText("c: " + displayingEdge.c, coordinates.x + 10, coordinates.y + 20);
+	ctx.fillText("size: " + displayingEdge.size, coordinates.x + 10, coordinates.y + 30);
+
 }
 
 function redoMove(mI){
@@ -379,10 +386,10 @@ c.onmousemove = function(e){
     //check to see if mouse is over a dot or edge, then display text box with properties
     
     if(mouseOverDot(coords)){
-    	displayDotProperties(coords);
+    	displayDotProperties(coords, mouseOverDot(coords));
     }
     else if(mouseOverEdge(coords)){
-    	displayEdgeProperties(coords);
+    	displayEdgeProperties(coords, mouseOverEdge(coords));
     }
 
     if(selectedDot){ //dragging a dot
