@@ -300,6 +300,8 @@ function locationIsWithinEdgeBounds(loc, edgeElement){
 }
 
 function displayDotProperties(coordinates, displayingDot){
+	var numNewAttributes = Object.keys(displayingDot).length - 4;
+
 	ctx.font = "10px serif";
 	ctx.fillStyle = "#FF0000";
 	ctx.fillText("x: " + displayingDot.x, coordinates.x + 10, coordinates.y);
@@ -309,6 +311,8 @@ function displayDotProperties(coordinates, displayingDot){
 }
 
 function displayEdgeProperties(coordinates, displayingEdge){
+	var numNewAttributes = Object.keys(displayingEdge).length - 4;
+
 	ctx.font = "10px serif";
 	ctx.fillStyle = "#FF0000";
 	ctx.fillText("d1: " + displayingEdge.di1, coordinates.x + 10, coordinates.y);
@@ -384,12 +388,13 @@ c.onmousemove = function(e){
     maxDist = (dist>maxDist) ? dist : maxDist
 
     //check to see if mouse is over a dot or edge, then display text box with properties
-    
+    var drawDotsLater = false;
+    var drawEdgesLater = false;
     if(mouseOverDot(coords)){
-    	displayDotProperties(coords, mouseOverDot(coords));
+    	drawDotsLater = true;
     }
     else if(mouseOverEdge(coords)){
-    	displayEdgeProperties(coords, mouseOverEdge(coords));
+    	drawEdgesLater = true;
     }
 
     if(selectedDot){ //dragging a dot
@@ -415,7 +420,17 @@ c.onmousemove = function(e){
         currLoc = {x:coords.x, y:coords.y}
         drawTwoPointRect(startLoc, currLoc)
     }
+
     drawCanvas();
+
+    //drawing properties if needed
+    if(drawDotsLater){
+    	displayDotProperties(coords, mouseOverDot(coords));
+    }
+    else if(drawEdgesLater){
+    	displayEdgeProperties(coords, mouseOverEdge(coords));
+    }
+
 }
 c.onmouseup = function(e){
     var coords = canvas.relMouseCoords(e);
