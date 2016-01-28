@@ -300,26 +300,39 @@ function locationIsWithinEdgeBounds(loc, edgeElement){
 }
 
 function displayDotProperties(coordinates, displayingDot){
-	var numNewAttributes = Object.keys(displayingDot).length - 4;
+	var numAttributes = Object.keys(displayingDot).length;
+
+	var xStart = coordinates.x + 10;
+	var yStart = coordinates.y;
+	var yIncrement = 10;
 
 	ctx.font = "10px serif";
 	ctx.fillStyle = "#FF0000";
-	ctx.fillText("x: " + displayingDot.x, coordinates.x + 10, coordinates.y);
-	ctx.fillText("y: " + displayingDot.y, coordinates.x + 10, coordinates.y + 10);
-	ctx.fillText("r: " + displayingDot.r, coordinates.x + 10, coordinates.y + 20);
-	ctx.fillText("c: " + displayingDot.c, coordinates.x + 10, coordinates.y + 30);
+	
+	var propValue;
+	for(var propName in displayingDot){
+		propValue = displayingDot[propName];
+		ctx.fillText(propName + ": " + propValue, xStart, yStart);
+		yStart += yIncrement;
+	}
 }
 
 function displayEdgeProperties(coordinates, displayingEdge){
-	var numNewAttributes = Object.keys(displayingEdge).length - 4;
+	var numNewAttributes = Object.keys(displayingEdge).length;
 
+	var xStart = coordinates.x + 10;
+	var yStart = coordinates.y;
+	var yIncrement = 10;
+	
 	ctx.font = "10px serif";
 	ctx.fillStyle = "#FF0000";
-	ctx.fillText("d1: " + displayingEdge.di1, coordinates.x + 10, coordinates.y);
-	ctx.fillText("d2: " + displayingEdge.di2, coordinates.x + 10, coordinates.y + 10);
-	ctx.fillText("c: " + displayingEdge.c, coordinates.x + 10, coordinates.y + 20);
-	ctx.fillText("size: " + displayingEdge.size, coordinates.x + 10, coordinates.y + 30);
 
+	var propValue;
+	for(var propName in displayingEdge){
+		propValue = displayingEdge[propName];
+		ctx.fillText(propName + ": " + propValue, xStart, yStart);
+		yStart += yIncrement;
+	}
 }
 
 function redoMove(mI){
