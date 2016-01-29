@@ -78,6 +78,10 @@ document.onkeydown = function(e){
 		console.log("exited edge mode");
 		edgeMode = false;
 	}
+	if(sequenceMode){
+		console.log("exited sequence mode");
+		sequenceMode = false;
+	}
     }
     else if(e.keyCode == 46){ //delete key pressed
     	deleteSelectedEdges();
