@@ -48,7 +48,7 @@ function drawDots(){
 function drawEdges(){
 	for(var i = 0; i < edges.length; i++){
 		ctx.beginPath();
-		if(edges[i].curve == "y"){
+		if(edges[i].curve == "yes"){
 			ctx.bezierCurveTo(dots[edges[i].di1].x, dots[edges[i].di1].y, edges[i].curvex, edges[i].curvey, dots[edges[i].di2].x, dots[edges[i].di2].y);
 		}
 		else{
@@ -212,33 +212,27 @@ function mouseOverDot(loc){
     return false;
 }
 
-//STILL DOES NOT QUITE WORK FOR WHEN THE LINE IS CLOSE TO VERTICAL OR HORIZONTAL
 function findSelectedLine(loc){
 	//[(di1: 1, di2: 2, c: "red")]
 	
 	for(var i = 0; i < edges.length; i++){
 		if(locationIsWithinEdgeBounds(loc, edges[i])){
-			var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
-			var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
-			var leftHandSide = (loc.y - dots[edges[i].di1].y) * slopebot;
-			var rightHandSide = (loc.x - dots[edges[i].di1].x) * slopetop;
-			console.log("edge index: " + i);
-			console.log("leftHandSide: " + leftHandSide);
-			console.log("rightHandSide: " + rightHandSide);
-			//console.log("slope: " + slope);
-			//
-			
-			//if both are negative make them positive
-			if(leftHandSide < 0 && rightHandSide < 0){
-				leftHandSide = Math.abs(leftHandSide);
-				rightHandSide = Math.abs(rightHandSide);
+			if(edges[i].curve != "yes"){
+				var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
+				var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
+				var yint = dots[edges[i].di1].y - ((slopetop/slopebot) * dots[edges[i].di1].x);
+				var a = -1 * slopetop;
+				var b = slopebot;
+				var c = -1 * slopebot * yint;
+				//console.log("a = " + a + " b = " + b + " c = " + c);
+				var distance = Math.abs(a * loc.x + b * loc.y + c)/Math.sqrt(a * a + b * b);
+				//console.log("DISTANCE = " + distance);
+				if(distance < EDGEWIDTH){
+					edges[i].c = "red";
+					return edges[i];
+				}
 			}
-			if((leftHandSide > rightHandSide * 0.90 && leftHandSide < rightHandSide * 1.10) || (rightHandSide > leftHandSide * 0.90 && rightHandSide < leftHandSide * 1.10)){
-				console.log("leftHandSide: " + leftHandSide);
-				console.log("rightHandSide: " + rightHandSide);
-	
-				edges[i].c = "red";
-				return edges[i];
+			else{
 			}
 		}
 	}
@@ -249,18 +243,21 @@ function findSelectedLine(loc){
 function mouseOverEdge(loc){
 	for(var i = 0; i < edges.length; i++){
 		if(locationIsWithinEdgeBounds(loc, edges[i])){
-			var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
-			var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
-			var leftHandSide = (loc.y - dots[edges[i].di1].y) * slopebot;
-			var rightHandSide = (loc.x - dots[edges[i].di1].x) * slopetop;
-
-			if(leftHandSide < 0 && rightHandSide < 0){
-				leftHandSide = Math.abs(leftHandSide);
-				rightHandSide = Math.abs(rightHandSide);
+			if(edges[i].curve != "yes"){
+				var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
+				var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
+				var yint = dots[edges[i].di1].y - ((slopetop/slopebot) * dots[edges[i].di1].x);
+				var a = -1 * slopetop;
+				var b = slopebot;
+				var c = -1 * slopebot * yint;
+				//console.log("a = " + a + " b = " + b + " c = " + c);
+				var distance = Math.abs(a * loc.x + b * loc.y + c)/Math.sqrt(a * a + b * b);
+				//console.log("DISTANCE = " + distance);
+				if(distance < EDGEWIDTH){
+					return edges[i];
+				}
 			}
-			if((leftHandSide > rightHandSide * 0.90 && leftHandSide < rightHandSide * 1.10) || (rightHandSide > leftHandSide * 0.90 && rightHandSide < leftHandSide * 1.10)){
-	
-				return edges[i];
+			else{
 			}
 		}
 	}
@@ -423,7 +420,7 @@ c.onmousemove = function(e){
     	if(currLoc.x && currLoc.y){
     		var indexOfLine = edges.indexOf(selectedLine);
 		//console.log(indexOfLine);
-		edges[indexOfLine].curve = "y";
+		edges[indexOfLine].curve = "yes";
 		edges[indexOfLine].curvex = currLoc.x;
 		edges[indexOfLine].curvey = currLoc.y;
 		console.log(edges[indexOfLine]);
