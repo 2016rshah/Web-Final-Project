@@ -373,144 +373,161 @@ var originallyBlue = true
 var sequenceMode = false;
 var edgeMode = false;
 
+//to hold the original state of the sequence or edge mode
+var stateOfDots = [];
+var stateOfEdges = [];
+
 //toggle ability with control click
 
 c.onmousedown = function(e){
-    var coords = canvas.relMouseCoords(e);
-    startLoc = {x:coords.x, y:coords.y}
-
-    
-    drawing = true;
-
-    if(e.metaKey || e.ctrlKey){
-        ctrlPressed = true;
-    }
-
-    selectedDot = findSelectedDot(startLoc);
-    if(!selectedDot){
-    	selectedLine = findSelectedLine(startLoc);
-    }
-    
-
-}
-c.onmousemove = function(e){
-    clearC();
-    var coords = canvas.relMouseCoords(e);
-
-    var dist = Math.pow(startLoc.x - currLoc.x, 2) + Math.pow(startLoc.y - currLoc.y, 2)
-    maxDist = (dist>maxDist) ? dist : maxDist
-
-    //check to see if mouse is over a dot or edge, then display text box with properties
-    var drawDotsLater = false;
-    var drawEdgesLater = false;
-    if(mouseOverDot(coords)){
-    	drawDotsLater = true;
-    }
-    else if(mouseOverEdge(coords)){
-    	drawEdgesLater = true;
-    }
-
-    if(selectedDot){ //dragging a dot
-        if(currLoc.x && currLoc.y){
-            var dx = coords.x - currLoc.x
-            var dy = coords.y - currLoc.y
-            moveSelected(dx, dy)
-        }
-        currLoc = {x:coords.x, y:coords.y}
-    }
-    else if(selectedLine){ //dragging a line to produce a curve
-        currLoc = {x:coords.x, y:coords.y}
-    	if(currLoc.x && currLoc.y){
-    		var indexOfLine = edges.indexOf(selectedLine);
-		//console.log(indexOfLine);
-		edges[indexOfLine].curve = "yes";
-		edges[indexOfLine].curvex = currLoc.x;
-		edges[indexOfLine].curvey = currLoc.y;
-		console.log(edges[indexOfLine]);
-    	}
-    }
-    else if(drawing){ //selecting dots\
-        currLoc = {x:coords.x, y:coords.y}
-        drawTwoPointRect(startLoc, currLoc)
-    }
-
-    drawCanvas();
-
-    //drawing properties if needed
-    if(drawDotsLater){
-    	displayDotProperties(coords, mouseOverDot(coords));
-    }
-    else if(drawEdgesLater){
-    	displayEdgeProperties(coords, mouseOverEdge(coords));
-    }
-
-}
-c.onmouseup = function(e){
-    var coords = canvas.relMouseCoords(e);
-    finalLoc = {x:coords.x, y:coords.y}
-    
-    if(selectedDot){
-        clearC()
-
-        if(maxDist < 75){
-            if(ctrlPressed){
-                selectedDot.c = (originallyBlue) ? "red" : "blue"
-            }
-        }
-
-        var selected = []
-        for(var i = 0; i<dots.length; i++){
-            if(dots[i].c == "red"){ selected.push(i) }
-        }
-        var dx = finalLoc.x - startLoc.x
-        var dy = finalLoc.y - startLoc.y
-        pastActions.push({"type":"move", "dotIndices":selected, "dx": dx, "dy": dy})
-        console.log(pastActions)
-
-        drawCanvas()
-    }
-    else if(selectedLine){
-    	console.log("selected line");
-    	clearC();
-	drawCanvas();
+    if(sequenceMode){
+    	
     }
     else{
-        if(maxDist < 75){ //just clicked
-            clearC()
+    	var coords = canvas.relMouseCoords(e);
+    	startLoc = {x:coords.x, y:coords.y}
 
-            if(!ctrlPressed){
-                resetDots()
-		resetEdges();
-            }
+    
+    	drawing = true;
 
-            dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"}) 
+    	if(e.metaKey || e.ctrlKey){
+    	    ctrlPressed = true;
+    	}
 
-            pastActions.push({type:"create", x: coords.x, y: coords.y})
-            console.log(pastActions)
+    	selectedDot = findSelectedDot(startLoc);
+    	if(!selectedDot){
+    		selectedLine = findSelectedLine(startLoc);
+    	}
 
-            drawCanvas()
-        }
-        else{ //dragged over
-            clearC()
-
-            //control key part of lab
-            if(!ctrlPressed){
-                resetDots()
-		resetEdges();
-            }
-
-            convertDots(startLoc, finalLoc)
-            drawCanvas()
-        }
     }
-    //reset everything
-    ctrlPressed = false;
-    drawing = false;
-    startLoc = {}
-    currLoc = {}
-    finalLoc = {}
-    selectedDot = false
-    selectedLine = false;
-    maxDist = 0
-    originallyBlue = true;
+}
+c.onmousemove = function(e){
+    if(sequenceMode){
+
+    }
+    else{
+	    clearC();
+	    var coords = canvas.relMouseCoords(e);
+
+	    var dist = Math.pow(startLoc.x - currLoc.x, 2) + Math.pow(startLoc.y - currLoc.y, 2)
+	    maxDist = (dist>maxDist) ? dist : maxDist
+
+	    //check to see if mouse is over a dot or edge, then display text box with properties
+	    var drawDotsLater = false;
+	    var drawEdgesLater = false;
+	    if(mouseOverDot(coords)){
+		drawDotsLater = true;
+	    }
+	    else if(mouseOverEdge(coords)){
+		drawEdgesLater = true;
+	    }
+
+	    if(selectedDot){ //dragging a dot
+		if(currLoc.x && currLoc.y){
+		    var dx = coords.x - currLoc.x
+		    var dy = coords.y - currLoc.y
+		    moveSelected(dx, dy)
+		}
+		currLoc = {x:coords.x, y:coords.y}
+	    }
+	    else if(selectedLine){ //dragging a line to produce a curve
+		currLoc = {x:coords.x, y:coords.y}
+		if(currLoc.x && currLoc.y){
+			var indexOfLine = edges.indexOf(selectedLine);
+			//console.log(indexOfLine);
+			edges[indexOfLine].curve = "yes";
+			edges[indexOfLine].curvex = currLoc.x;
+			edges[indexOfLine].curvey = currLoc.y;
+			console.log(edges[indexOfLine]);
+		}
+	    }
+	    else if(drawing){ //selecting dots\
+		currLoc = {x:coords.x, y:coords.y}
+		drawTwoPointRect(startLoc, currLoc)
+	    }
+
+	    drawCanvas();
+
+	    //drawing properties if needed
+	    if(drawDotsLater){
+		displayDotProperties(coords, mouseOverDot(coords));
+	    }
+	    else if(drawEdgesLater){
+		displayEdgeProperties(coords, mouseOverEdge(coords));
+	    }    
+    }
+}
+c.onmouseup = function(e){
+    if(sequenceMode){
+
+    }
+	else{
+	    var coords = canvas.relMouseCoords(e);
+	    finalLoc = {x:coords.x, y:coords.y}
+	    
+	    if(selectedDot){
+		clearC()
+
+		if(maxDist < 75){
+		    if(ctrlPressed){
+			selectedDot.c = (originallyBlue) ? "red" : "blue"
+		    }
+		}
+
+		var selected = []
+		for(var i = 0; i<dots.length; i++){
+		    if(dots[i].c == "red"){ selected.push(i) }
+		}
+		var dx = finalLoc.x - startLoc.x
+		var dy = finalLoc.y - startLoc.y
+		pastActions.push({"type":"move", "dotIndices":selected, "dx": dx, "dy": dy})
+		console.log(pastActions)
+
+		drawCanvas()
+	    }
+	    else if(selectedLine){
+		console.log("selected line");
+		clearC();
+		drawCanvas();
+	    }
+	    else{
+		if(maxDist < 75){ //just clicked
+		    clearC()
+
+		    if(!ctrlPressed){
+			resetDots()
+			resetEdges();
+		    }
+
+		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"}) 
+
+		    pastActions.push({type:"create", x: coords.x, y: coords.y})
+		    console.log(pastActions)
+
+		    drawCanvas()
+		}
+		else{ //dragged over
+		    clearC()
+
+		    //control key part of lab
+		    if(!ctrlPressed){
+			resetDots()
+			resetEdges();
+		    }
+
+		    convertDots(startLoc, finalLoc)
+		    drawCanvas()
+		}
+	    }
+	    //reset everything
+	    ctrlPressed = false;
+	    drawing = false;
+	    startLoc = {}
+	    currLoc = {}
+	    finalLoc = {}
+	    selectedDot = false
+	    selectedLine = false;
+	    maxDist = 0
+	    originallyBlue = true;
+    }
 }

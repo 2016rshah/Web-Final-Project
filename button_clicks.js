@@ -29,20 +29,39 @@ document.getElementById("replay").onclick = function(){
 document.getElementById("sequence").onclick = function(){
     if(sequenceMode){
         sequenceMode = false;
+
+	stateOfDots = [];
+	stateOfEdges = [];
     }
     else{
+    	console.log("In sequence mode now");
     	sequenceMode = true;
 	edgeMode = false;
+
+	//unselects all dots, then stores initial state
+	resetDots();
+	stateOfDots = dots;
+	stateOfEdges = edges;
+
+	clearC();
+	drawCanvas();
     }
 }
 
 document.getElementById("spoke").onclick = function(){
     if(edgeMode){
     	edgeMode = false;
+
+	stateOfDots = [];
+	stateOfEdges = [];
     }
     else{
+    	console.log("In edge mode now");
     	edgeMode = true;
 	sequenceMode = false;
+
+	stateOfDots = dots;
+	stateOfEdges = edges;
     }
 }
 
