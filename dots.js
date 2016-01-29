@@ -216,24 +216,27 @@ function findSelectedLine(loc){
 	//[(di1: 1, di2: 2, c: "red")]
 	
 	for(var i = 0; i < edges.length; i++){
-		if(locationIsWithinEdgeBounds(loc, edges[i])){
-			if(edges[i].curve != "yes"){
-				var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
-				var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
-				var yint = dots[edges[i].di1].y - ((slopetop/slopebot) * dots[edges[i].di1].x);
-				var a = -1 * slopetop;
-				var b = slopebot;
-				var c = -1 * slopebot * yint;
-				//console.log("a = " + a + " b = " + b + " c = " + c);
-				var distance = Math.abs(a * loc.x + b * loc.y + c)/Math.sqrt(a * a + b * b);
-				//console.log("DISTANCE = " + distance);
-				if(distance < EDGEWIDTH){
-					edges[i].c = "red";
-					return edges[i];
-				}
+		//console.log(i);
+		if(edges[i].curve != "yes" && locationIsWithinEdgeBounds(loc, edges[i])){
+			var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
+			var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
+			var yint = dots[edges[i].di1].y - ((slopetop/slopebot) * dots[edges[i].di1].x);
+			var a = -1 * slopetop;
+			var b = slopebot;
+			var c = -1 * slopebot * yint;
+			//console.log("a = " + a + " b = " + b + " c = " + c);
+			var distance = Math.abs(a * loc.x + b * loc.y + c)/Math.sqrt(a * a + b * b);
+			//console.log("DISTANCE = " + distance);
+			if(distance < EDGEWIDTH){
+				edges[i].c = "red";
+				return edges[i];
 			}
-			else{
-			}
+		}
+		else if(edges[i].curve == "yes"){
+			//console.log("CURVE");
+			console.log(edges[i]);
+
+
 		}
 	}
 	return false;
@@ -242,23 +245,23 @@ function findSelectedLine(loc){
 //Basically same function as above, but does not change dot color
 function mouseOverEdge(loc){
 	for(var i = 0; i < edges.length; i++){
-		if(locationIsWithinEdgeBounds(loc, edges[i])){
-			if(edges[i].curve != "yes"){
-				var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
-				var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
-				var yint = dots[edges[i].di1].y - ((slopetop/slopebot) * dots[edges[i].di1].x);
-				var a = -1 * slopetop;
-				var b = slopebot;
-				var c = -1 * slopebot * yint;
-				//console.log("a = " + a + " b = " + b + " c = " + c);
-				var distance = Math.abs(a * loc.x + b * loc.y + c)/Math.sqrt(a * a + b * b);
-				//console.log("DISTANCE = " + distance);
-				if(distance < EDGEWIDTH){
-					return edges[i];
-				}
+		if(edges[i].curve != "yes" && locationIsWithinEdgeBounds(loc, edges[i])){
+			var slopetop = dots[edges[i].di1].y - dots[edges[i].di2].y;
+			var slopebot = dots[edges[i].di1].x - dots[edges[i].di2].x;
+			var yint = dots[edges[i].di1].y - ((slopetop/slopebot) * dots[edges[i].di1].x);
+			var a = -1 * slopetop;
+			var b = slopebot;
+			var c = -1 * slopebot * yint;
+			//console.log("a = " + a + " b = " + b + " c = " + c);
+			var distance = Math.abs(a * loc.x + b * loc.y + c)/Math.sqrt(a * a + b * b);
+			//console.log("DISTANCE = " + distance);
+			if(distance < EDGEWIDTH){
+				return edges[i];
 			}
-			else{
-			}
+		}
+		else if(edges[i].curve == "yes"){
+			//console.log("CURVE");
+			console.log(edges[i]);
 		}
 	}
 	return false;

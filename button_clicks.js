@@ -32,6 +32,7 @@ document.getElementById("sequence").onclick = function(){
     }
     else{
     	sequenceMode = true;
+	edgeMode = false;
     }
 }
 
@@ -41,6 +42,7 @@ document.getElementById("spoke").onclick = function(){
     }
     else{
     	edgeMode = true;
+	sequenceMode = false;
     }
 }
 
