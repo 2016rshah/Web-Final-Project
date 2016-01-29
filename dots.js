@@ -379,8 +379,11 @@ var stateOfEdges = [];
 
 //for sequence mode
 var firstDotInSequence;
+var firstDotSet = false;
 var previousDotInSequence;
 var currentDotInSequence;
+var indexOfCurrentDotInSequence;
+var indexOfSelectedDot;
 
 //toggle ability with control click
 
@@ -390,6 +393,7 @@ c.onmousedown = function(e){
 	startLoc = {x: coords.x, y: coords.y};
 
 	selectedDot = findSelectedDot(startLoc);
+	indexOfSelectedDot = dots.indexOf(selectedDot);
     }
     else{
     	var coords = canvas.relMouseCoords(e);
@@ -489,11 +493,33 @@ c.onmouseup = function(e){
 		if(maxDist < 75 && !selectedDot){ //just clicked
 		    clearC()
 		    resetDots()
-		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"}) 
+		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"})
+		    if(firstDotSet){
+		    	previousDotInSequence = currentDotInSequence;
+			currentDotInSequence = dots[dots.length - 1];
+			indexOfCurrentDotInSequence = dots.length - 1;
+		    }
+		    else{
+		    	firstDotInSequence = dots.length - 1;
+			currentDotInSequence = dots[dots.length - 1];
+			indexOfCurrentDotInSequence = firstDotInSequence;
+			firstDotSet = true;
+		    }
 		    drawCanvas()
 		}
 		else if(maxDist < 75 && selectedDot){
 			clearC()
+			if(firstDotSet){
+				previousDotInSequence = currentDotInSequence;
+				currentDotInSequence = selectedDot;
+				indexOfCurrentDotInSequence = indexOfSelectedDot;
+			}
+			else{
+				firstDotInSequence = indexOfSelectedDot;
+				currentDotInSequence = selectedDot;
+				indexOfCurrentDotInSequence = firstDotInSequence;
+				firstDotSet = true;
+			}
 			selectedDot.c = "red";
 			drawCanvas()
 		}
@@ -501,9 +527,25 @@ c.onmouseup = function(e){
 		    clearC()
 		    //convertDots(startLoc, finalLoc)
 		    resetDots();
+		    if(firstDotSet){
+		    	previousDotInSequence = currentDotInSequence;
+			currentDotInSequence = selectedDot;
+			indexOfCurrentDotInSequence = indexOfSelectedDot;
+		    }
+		    else{
+		    	firstDotInSequence = indexOfSelectedDot;
+			currentDotInSequence = selectedDot;
+			indexOfCurrentDotInSequence = firstDotInSequence;
+			firstDotSet = true;
+		    }
 		    selectedDot.c = "red";
 		    drawCanvas()
 		}
+
+		//Sequence mode
+
+
+
 		//reset everything
 		ctrlPressed = false;
 		drawing = false;
@@ -514,7 +556,6 @@ c.onmouseup = function(e){
 		selectedLine = false;
 		maxDist = 0
 		originallyBlue = true;
-
 	}
 	else{
 	    var coords = canvas.relMouseCoords(e);
