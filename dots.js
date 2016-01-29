@@ -542,9 +542,22 @@ c.onmouseup = function(e){
 		    drawCanvas()
 		}
 
+		console.log(dots);
+
+		console.log(previousDotInSequence);
+		console.log(currentDotInSequence);
+
 		//Sequence mode
-
-
+		if(indexOfCurrentDotInSequence == firstDotInSequence && previousDotInSequence){ //initial vertex reached
+			sequenceMode = false;
+			console.log("exiting sequence mode");
+		}
+		else if(previousDotInSequence){
+			//create edge between currentDot and previousDot
+			//edges.push({di1:previousDotInSequence, di2:currentDotInSequence, c:"red", size:EDGEWIDTH});
+		}
+		clearC();
+		drawCanvas();
 
 		//reset everything
 		ctrlPressed = false;
