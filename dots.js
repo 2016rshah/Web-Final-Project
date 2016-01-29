@@ -377,11 +377,19 @@ var edgeMode = false;
 var stateOfDots = [];
 var stateOfEdges = [];
 
+//for sequence mode
+var firstDotInSequence;
+var previousDotInSequence;
+var currentDotInSequence;
+
 //toggle ability with control click
 
 c.onmousedown = function(e){
     if(sequenceMode){
-    	
+    	var coords = canvas.relMouseCoords(e);
+	startLoc = {x: coords.x, y: coords.y};
+
+	selectedDot = findSelectedDot(startLoc);
     }
     else{
     	var coords = canvas.relMouseCoords(e);
@@ -403,7 +411,24 @@ c.onmousedown = function(e){
 }
 c.onmousemove = function(e){
     if(sequenceMode){
+	    clearC();
+	    var coords = canvas.relMouseCoords(e);
 
+	    var dist = Math.pow(startLoc.x - currLoc.x, 2) + Math.pow(startLoc.y - currLoc.y, 2)
+	    maxDist = (dist>maxDist) ? dist : maxDist
+
+	    if(selectedDot){ //dragging a dot
+	    	resetDots();
+		selectedDot.c = "red";
+		if(currLoc.x && currLoc.y){
+		    var dx = coords.x - currLoc.x
+		    var dy = coords.y - currLoc.y
+		    moveSelected(dx, dy)
+		}
+		currLoc = {x:coords.x, y:coords.y}
+	    }
+
+	    drawCanvas();
     }
     else{
 	    clearC();
@@ -458,9 +483,39 @@ c.onmousemove = function(e){
     }
 }
 c.onmouseup = function(e){
-    if(sequenceMode){
+	if(sequenceMode){
+		var coords = canvas.relMouseCoords(e);
+		finalLoc = {x:coords.x, y:coords.y};
+		if(maxDist < 75 && !selectedDot){ //just clicked
+		    clearC()
+		    resetDots()
+		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"}) 
+		    drawCanvas()
+		}
+		else if(maxDist < 75 && selectedDot){
+			clearC()
+			selectedDot.c = "red";
+			drawCanvas()
+		}
+		else{ //dragged over
+		    clearC()
+		    //convertDots(startLoc, finalLoc)
+		    resetDots();
+		    selectedDot.c = "red";
+		    drawCanvas()
+		}
+		//reset everything
+		ctrlPressed = false;
+		drawing = false;
+		startLoc = {}
+		currLoc = {}
+		finalLoc = {}
+		selectedDot = false
+		selectedLine = false;
+		maxDist = 0
+		originallyBlue = true;
 
-    }
+	}
 	else{
 	    var coords = canvas.relMouseCoords(e);
 	    finalLoc = {x:coords.x, y:coords.y}
