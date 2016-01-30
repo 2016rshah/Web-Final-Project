@@ -1,9 +1,19 @@
 document.onkeydown = function(e){
     if(e.keyCode == 27){ //escape
-        clearC()
-        resetDots()
-	resetEdges();
-        drawCanvas()
+    	if(sequenceMode){
+		console.log("escape");
+		dots = stateOfDots;
+		edges = stateOfEdges;
+		clearC();
+		drawCanvas();
+		sequenceMode = false;
+	}
+	else{
+		clearC()
+        	resetDots()
+		resetEdges();
+        	drawCanvas()
+	}
     }
     else if(KEY_MAP[e.keyCode]){
         clearC()

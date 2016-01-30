@@ -40,6 +40,7 @@ document.getElementById("sequence").onclick = function(){
 
 	//unselects all dots, then stores initial state
 	resetDots();
+
 	stateOfDots = dots;
 	stateOfEdges = edges;
 

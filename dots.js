@@ -382,7 +382,7 @@ var firstDotInSequence;
 var firstDotSet = false;
 var previousDotInSequence;
 var currentDotInSequence;
-var indexOfCurrentDotInSequence;
+//var indexOfCurrentDotInSequence;
 var indexOfSelectedDot;
 
 //toggle ability with control click
@@ -496,13 +496,13 @@ c.onmouseup = function(e){
 		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"})
 		    if(firstDotSet){
 		    	previousDotInSequence = currentDotInSequence;
-			currentDotInSequence = dots[dots.length - 1];
-			indexOfCurrentDotInSequence = dots.length - 1;
+			currentDotInSequence = dots.length - 1;
+			//indexOfCurrentDotInSequence = dots.length - 1;
 		    }
 		    else{
 		    	firstDotInSequence = dots.length - 1;
-			currentDotInSequence = dots[dots.length - 1];
-			indexOfCurrentDotInSequence = firstDotInSequence;
+			currentDotInSequence = dots.length - 1;
+			//indexOfCurrentDotInSequence = firstDotInSequence;
 			firstDotSet = true;
 		    }
 		    drawCanvas()
@@ -511,13 +511,13 @@ c.onmouseup = function(e){
 			clearC()
 			if(firstDotSet){
 				previousDotInSequence = currentDotInSequence;
-				currentDotInSequence = selectedDot;
-				indexOfCurrentDotInSequence = indexOfSelectedDot;
+				currentDotInSequence = indexOfSelectedDot;
+				//indexOfCurrentDotInSequence = indexOfSelectedDot;
 			}
 			else{
 				firstDotInSequence = indexOfSelectedDot;
-				currentDotInSequence = selectedDot;
-				indexOfCurrentDotInSequence = firstDotInSequence;
+				currentDotInSequence = indexOfSelectedDot;
+				//indexOfCurrentDotInSequence = firstDotInSequence;
 				firstDotSet = true;
 			}
 			selectedDot.c = "red";
@@ -529,13 +529,13 @@ c.onmouseup = function(e){
 		    resetDots();
 		    if(firstDotSet){
 		    	previousDotInSequence = currentDotInSequence;
-			currentDotInSequence = selectedDot;
-			indexOfCurrentDotInSequence = indexOfSelectedDot;
+			currentDotInSequence = indexOfSelectedDot;
+			//indexOfCurrentDotInSequence = indexOfSelectedDot;
 		    }
 		    else{
 		    	firstDotInSequence = indexOfSelectedDot;
 			currentDotInSequence = selectedDot;
-			indexOfCurrentDotInSequence = firstDotInSequence;
+			//indexOfCurrentDotInSequence = firstDotInSequence;
 			firstDotSet = true;
 		    }
 		    selectedDot.c = "red";
@@ -548,13 +548,16 @@ c.onmouseup = function(e){
 		console.log(currentDotInSequence);
 
 		//Sequence mode
-		if(indexOfCurrentDotInSequence == firstDotInSequence && previousDotInSequence){ //initial vertex reached
+		if(currentDotInSequence == firstDotInSequence && previousDotInSequence){ //initial vertex reached
+			edges.push({di1:previousDotInSequence, di2:currentDotInSequence, c:"blue", size:EDGEWIDTH});
 			sequenceMode = false;
+			firstDotSet = false;
+			previousDotInSequence = undefined;
 			console.log("exiting sequence mode");
 		}
 		else if(previousDotInSequence){
 			//create edge between currentDot and previousDot
-			//edges.push({di1:previousDotInSequence, di2:currentDotInSequence, c:"red", size:EDGEWIDTH});
+			edges.push({di1:previousDotInSequence, di2:currentDotInSequence, c:"blue", size:EDGEWIDTH});
 		}
 		clearC();
 		drawCanvas();
