@@ -237,8 +237,10 @@ function findSelectedLine(loc){
 		else if(edges[i].curve == "yes"){
 			//console.log("CURVE");
 			console.log(edges[i]);
-
-
+			if(locNearCurve(dots[edges[i].di1].x, dots[edges[i].di1].y, edges[i].curvex, edges[i].curvey, dots[edges[i].di2].x, dots[edges[i].di2].y, loc.x, loc.y)){
+				edges[i].c = "red";
+				return edges[i];
+			}
 		}
 	}
 	return false;
@@ -263,11 +265,31 @@ function mouseOverEdge(loc){
 		}
 		else if(edges[i].curve == "yes"){
 			//console.log("CURVE");
-			console.log(edges[i]);
+			//console.log(edges[i]);
+			if(locNearCurve(dots[edges[i].di1].x, dots[edges[i].di1].y, edges[i].curvex, edges[i].curvey, dots[edges[i].di2].x, dots[edges[i].di2].y, loc.x, loc.y)){
+				return edges[i];
+			}
+
 		}
 	}
 	return false;
 
+}
+
+function locNearCurve(px0, py0, px1, py1, px2, py2, n1, n2){
+	var t = 0.00;
+
+	while(t <= 1.00){
+		var tempx = (1 - t) * (1 - t) * px0 + 2 * (1 - t) * t * px1 + t * t * px2;
+		var tempy = (1 - t) * (1 - t) * py0 + 2 * (1 - t) * t * py1 + t * t * py2;
+		var tempdistance = Math.sqrt((n1 - tempx) * (n1 - tempx) + (n2 - tempy) * (n2 - tempy));
+		console.log("TEMP DISTANCE: " + tempdistance);
+		if(tempdistance < EDGEWIDTH){
+			return true;
+		}
+		t = t + 0.005;
+	}
+	return false;
 }
 
 function locationIsWithinEdgeBounds(loc, edgeElement){
