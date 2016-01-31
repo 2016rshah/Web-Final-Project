@@ -80,19 +80,19 @@ document.onkeydown = function(e){
         }
     }
     else if(e.keyCode == 69 && e.shiftKey){ //E pressed
-    	if(edgeMode){
-    		connectEdges();
-	}
+    	//if(edgeMode){
+    	connectEdges();
+	//}
     }
     else if(e.keyCode == 67 && e.shiftKey){ //C pressed
-    	if(edgeMode){
-    		clearEdges();
-	}
+    	//if(edgeMode){
+    	clearEdges();
+	//}
     }
     else if(e.keyCode == 84 && e.shiftKey){ //T pressed
-    	if(edgeMode){
-    		toggleEdges();
-	}
+    	//if(edgeMode){
+    	toggleEdges();
+	//}
     }
     else if(e.keyCode == 81){ //q pressed
     	if(edgeMode){
