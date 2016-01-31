@@ -278,6 +278,7 @@ function mouseOverEdge(loc){
 
 function locNearCurve(px0, py0, px1, py1, px2, py2, n1, n2){
 	var t = 0.00;
+	//console.log(px0 + " " + py0 + " : " + px1 + " " + py1 + " : " + px2 + " " + py2);
 
 	while(t <= 1.00){
 		var tempx = (1 - t) * (1 - t) * px0 + 2 * (1 - t) * t * px1 + t * t * px2;
