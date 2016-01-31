@@ -41,8 +41,8 @@ document.getElementById("sequence").onclick = function(){
 	//unselects all dots, then stores initial state
 	resetDots();
 
-	stateOfDots = dots;
-	stateOfEdges = edges;
+	stateOfDots = dots.slice();
+	stateOfEdges = edges.slice();
 
 	clearC();
 	drawCanvas();
@@ -61,8 +61,8 @@ document.getElementById("spoke").onclick = function(){
     	edgeMode = true;
 	sequenceMode = false;
 
-	stateOfDots = dots;
-	stateOfEdges = edges;
+	stateOfDots = dots.slice();
+	stateOfEdges = edges.slice();
     }
 }
 

@@ -46,6 +46,8 @@ function drawDots(){
 
 //draws new edges
 function drawEdges(){
+	//console.log("EDGES:");
+	//console.log(edges);
 	for(var i = 0; i < edges.length; i++){
 		ctx.beginPath();
 		if(edges[i].curve == "yes"){

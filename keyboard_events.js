@@ -2,8 +2,19 @@ document.onkeydown = function(e){
     if(e.keyCode == 27){ //escape
     	if(sequenceMode){
 		console.log("escape");
-		dots = stateOfDots;
-		edges = stateOfEdges;
+		dots = [];
+		edges = [];
+		dots = stateOfDots.slice();
+		edges = stateOfEdges.slice();
+		stateOfDots = [];
+		stateOfEdges = [];
+
+		console.log(dots);
+		console.log(edges);
+
+		firstDotSet = false;
+		previousDotInSequence = undefined;
+
 		clearC();
 		drawCanvas();
 		sequenceMode = false;
