@@ -23,14 +23,13 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
 }
 elseif(!empty($_POST['username']) && !empty($_POST['password']))
 {
-  ;
     $username = $db->escape_string($_POST['username']);
     $password = md5($db->escape_string($_POST['password']));
     
     $sql = "SELECT * FROM users WHERE Username = '".$username."' AND Password = '".$password."'";
     if(!$result = $db->query($sql)){
       die('There was an error running the query [' . $db->error . ']');
-  }
+    }
 
     $foundUser = False;
     while($row = $result->fetch_assoc()){
@@ -38,11 +37,12 @@ elseif(!empty($_POST['username']) && !empty($_POST['password']))
          
         $_SESSION['Username'] = $username;
         $_SESSION['LoggedIn'] = 1;
+        $_SESSION['Canvas'] = $row["Canvas"];
          
          //now redirect them where they need to go
         echo "<script>window.location = 'dots.php'</script>";
 
-  } 
+    } 
     if(!$foundUser)
     {
         echo "<h1>Error</h1>";

@@ -59,7 +59,7 @@
 	<script src="edge_mode.js"></script>
 
 
-    <form action="index.php" method="post" id="form">
+    <form action="dots.php" method="post" id="form">
         <input style="display:none;" id="saveInfo" type="text" name="saveInfo" />
         <button id="submitButton" type="button" accessKey="s"><u>S</u>ave</button>
         <button id="loadButton" type="button" accessKey="l"><u>L</u>oad</button>
@@ -83,13 +83,9 @@
         document.getElementById("loadButton").onclick = function(e){
             clearC()
 
+            console.log('1')
 
-
-            dots = eval(<?=$_SESSION['Canvas']?>)
-
-
-            console.log(<?=$_SESSION['Canvas']?>)
-
+            dots = eval('<?=$_SESSION["Canvas"]?>') //maybe shouldn't use session variable because otherwise they need to log out
 
 
             drawDots()
@@ -97,7 +93,7 @@
     </script>
 
     <?php 
-        if(strlen($_REQUEST["saveInfo"]) > 1):
+        if (isset($_REQUEST['saveInfo'])) {
             //technically I think you need to update the session variable here as well, not just db
             $sql = "UPDATE users SET Canvas = '".$_REQUEST["saveInfo"]."'";
             //"SELECT * FROM users WHERE Username = '".$username."' AND Password = '".$password."'"
@@ -106,7 +102,7 @@
             } else {
                 echo "Error updating record: " . $conn->error;
             }
-        endif; 
+        }
     ?>
     </body>
 </html>
