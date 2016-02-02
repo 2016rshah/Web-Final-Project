@@ -83,25 +83,39 @@
         document.getElementById("loadButton").onclick = function(e){
             clearC()
 
-            console.log('1')
+            <?php
 
-            dots = eval('<?=$_SESSION["Canvas"]?>') //maybe shouldn't use session variable because otherwise they need to log out
+            $sql = "SELECT * FROM users WHERE Username = '".$_SESSION["Username"]."'";
+            if(!$result = $db->query($sql)){
+              die('There was an error running the query [' . $db->error . ']');
+            }
 
+            while($row = $result->fetch_assoc()){
+                $_SESSION['Canvas'] = $row["Canvas"];
+
+            } 
+            ?>
+
+            dots = eval('<?=$_SESSION["Canvas"]?>')
 
             drawDots()
         }
     </script>
 
     <?php 
+        //pretty sure this is getting called as often as possible which is definitely not a good thing, but whatever. 
         if (isset($_REQUEST['saveInfo'])) {
             //technically I think you need to update the session variable here as well, not just db
             $sql = "UPDATE users SET Canvas = '".$_REQUEST["saveInfo"]."'";
             //"SELECT * FROM users WHERE Username = '".$username."' AND Password = '".$password."'"
-            if ($conn->query($sql) === TRUE) {
+            if ($db->query($sql) === TRUE) {
                 echo "Record updated successfully";
             } else {
-                echo "Error updating record: " . $conn->error;
+                echo "Error updating record: " . $db->error;
             }
+        }
+        else{
+            echo "Not set";
         }
     ?>
     </body>
