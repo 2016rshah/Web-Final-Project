@@ -15,9 +15,31 @@ document.onkeydown = function(e){
 		firstDotSet = false;
 		previousDotInSequence = undefined;
 
+		resetDots();
+		resetEdges();
+
 		clearC();
 		drawCanvas();
 		sequenceMode = false;
+	}
+	else if(edgeMode){
+		console.log("escape");
+		dots = [];
+		edges = [];
+		dots = stateOfDots.slice();
+		edges = stateOfEdges.slice();
+		stateOfDots = [];
+		stateOfEdges = [];
+
+		indicatedDots = [];
+		haveDotsBeenSelected = false;
+
+		resetDots();
+		resetEdges();
+
+		clearC();
+		drawCanvas();
+		edgeMode = false;
 	}
 	else{
 		clearC()

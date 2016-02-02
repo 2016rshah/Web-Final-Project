@@ -380,6 +380,28 @@ function redoMove(mI){
     }
 }
 
+function toggleEdgesInEdgeMode(dotSet1, dotSet2){
+	for(var i = 0; i < dotSet1.length; i++){
+		for(var j = 0; j < dotSet2.length; j++){
+			var correspondingIndexInEdgeArray = -1;
+			for(var k = 0; k < edges.length; k++){
+				if(edges[k].di1 == dotSet1[i] && edges[k].di2 == dotSet2[j]){
+					correspondingIndexInEdgeArray = k;
+				}
+				if(edges[k].di1 == dotSet2[j] && edges[k].di2 == dotSet1[i]){
+					correspondingIndexInEdgeArray = k;
+				}
+			}
+			if(correspondingIndexInEdgeArray == -1){
+				edges.push({di1:dotSet1[i], di2:dotSet2[j], c:"red", size:EDGEWIDTH});
+			}
+			else{
+				edges.splice(correspondingIndexInEdgeArray, 1);
+			}
+		}
+	}
+}
+
 var startLoc = {}
 var currLoc = {}
 var finalLoc = {}
@@ -410,6 +432,10 @@ var currentDotInSequence;
 //var indexOfCurrentDotInSequence;
 var indexOfSelectedDot;
 
+//for edge mode
+var indicatedDots = [];
+var haveDotsBeenSelected = false;
+
 //toggle ability with control click
 
 c.onmousedown = function(e){
@@ -420,10 +446,17 @@ c.onmousedown = function(e){
 	selectedDot = findSelectedDot(startLoc);
 	indexOfSelectedDot = dots.indexOf(selectedDot);
     }
+    else if(edgeMode){
+    	var coords = canvas.relMouseCoords(e);
+	startLoc = {x: coords.x, y: coords.y};
+
+	drawing = true;
+
+	selectedDot = findSelectedDot(startLoc);
+    }
     else{
     	var coords = canvas.relMouseCoords(e);
     	startLoc = {x:coords.x, y:coords.y}
-
     
     	drawing = true;
 
@@ -448,6 +481,8 @@ c.onmousemove = function(e){
 
 	    if(selectedDot){ //dragging a dot
 	    	resetDots();
+		resetEdges();
+
 		selectedDot.c = "red";
 		if(currLoc.x && currLoc.y){
 		    var dx = coords.x - currLoc.x
@@ -457,6 +492,30 @@ c.onmousemove = function(e){
 		currLoc = {x:coords.x, y:coords.y}
 	    }
 
+	    drawCanvas();
+    }
+    else if(edgeMode){
+	    clearC();
+	    var coords = canvas.relMouseCoords(e);
+
+	    var dist = Math.pow(startLoc.x - currLoc.x, 2) + Math.pow(startLoc.y - currLoc.y, 2)
+	    maxDist = (dist>maxDist) ? dist : maxDist
+
+	    if(selectedDot){
+	    	resetDots();
+		resetEdges();
+		selectedDot.c = "red";
+		if(currLoc.x && currLoc.y){
+		    var dx = coords.x - currLoc.x
+		    var dy = coords.y - currLoc.y
+		    moveSelected(dx, dy)
+		}
+		currLoc = {x:coords.x, y:coords.y}
+	    }
+	    else if(drawing){
+		currLoc = {x:coords.x, y:coords.y}
+		drawTwoPointRect(startLoc, currLoc)
+	    }
 	    drawCanvas();
     }
     else{
@@ -518,6 +577,7 @@ c.onmouseup = function(e){
 		if(maxDist < 75 && !selectedDot){ //just clicked
 		    clearC()
 		    resetDots()
+		    resetEdges()
 		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"})
 		    if(firstDotSet){
 		    	previousDotInSequence = currentDotInSequence;
@@ -552,6 +612,8 @@ c.onmouseup = function(e){
 		    clearC()
 		    //convertDots(startLoc, finalLoc)
 		    resetDots();
+		    resetEdges();
+		    
 		    if(firstDotSet){
 		    	previousDotInSequence = currentDotInSequence;
 			currentDotInSequence = indexOfSelectedDot;
@@ -597,6 +659,96 @@ c.onmouseup = function(e){
 		selectedLine = false;
 		maxDist = 0
 		originallyBlue = true;
+	}
+	else if(edgeMode){
+		var coords = canvas.relMouseCoords(e);
+		finalLoc = {x:coords.x, y:coords.y};
+
+		if(maxDist < 75 && !selectedDot){
+			clearC();
+			resetDots();
+			resetEdges();
+			dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"});
+			if(haveDotsBeenSelected){
+				var selectedVertices = [];
+				var tempSelectedDotIndex = dots.length - 1;
+				selectedVertices.push(tempSelectedDotIndex);
+				//toggle edges
+				toggleEdgesInEdgeMode(indicatedDots, selectedVertices);
+				//reset things
+				haveDotsBeenSelected = false;
+				indicatedDots = [];
+			}
+			else{
+				var tempDotIndex = dots.length - 1;
+				indicatedDots.push(tempDotIndex);
+				haveDotsBeenSelected = true;
+			}
+			drawCanvas();
+		}
+		else if(maxDist < 75 && selectedDot){
+			clearC();
+			resetDots();
+			resetEdges();
+			if(haveDotsBeenSelected){
+				var selectedVertices = [];
+				var tempSelectedDotIndex = dots.indexOf(selectedDot);
+				selectedVertices.push(tempSelectedDotIndex);
+				toggleEdgesInEdgeMode(indicatedDots, selectedVertices);
+
+				haveDotsBeenSelected = false;
+				indicatedDots = [];
+			}
+			else{
+				var tempDotIndex = dots.indexOf(selectedDot);
+				indicatedDots.push(tempDotIndex);
+				haveDotsBeenSelected = true;
+			}
+			selectedDot.c = "red";
+			drawCanvas();
+		}
+		else{
+		    clearC()
+
+		    convertDots(startLoc, finalLoc)
+
+		    if(haveDotsBeenSelected){
+		    	var selectedVertices = [];
+			for(var i = 0; i < dots.length; i++){
+				if(dots[i].c == "red"){
+					selectedVertices.push(i);
+				}
+			}
+			toggleEdgesInEdgeMode(indicatedDots, selectedVertices);
+
+			haveDotsBeenSelected = false;
+			indicatedDots = [];
+		    }
+		    else{
+		    	for(var i = 0; i < dots.length; i++){
+				if(dots[i].c == "red"){
+					indicatedDots.push(i);
+				}
+			}
+			haveDotsBeenSelected = true;
+		    }
+		    drawCanvas()
+		}
+
+		clearC();
+		drawCanvas();
+
+		//reset everything
+		ctrlPressed = false;
+		drawing = false;
+		startLoc = {}
+		currLoc = {}
+		finalLoc = {}
+		selectedDot = false
+		selectedLine = false;
+		maxDist = 0
+		originallyBlue = true;
+
 	}
 	else{
 	    var coords = canvas.relMouseCoords(e);
