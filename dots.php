@@ -39,8 +39,8 @@
 		<option selected disabled hidden value=''></option>
 		<option value='name'>Name</option>
 		<option value='age'>Age</option>
-	   <option value='caption'>Caption</option>
-   </select>
+	   	<option value='caption'>Caption</option>
+   	</select>
 	of
 	<select id = "dotOrEdge">
 		<option selected disabled hidden value=''></option>
