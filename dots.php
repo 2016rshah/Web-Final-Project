@@ -1,3 +1,5 @@
+<?php include "base.php"; ?>
+
 <html>
     <head>
         <title>Final Project</title>
@@ -15,6 +17,7 @@
     </head>
     <body>
         <h1>Final Project: Dot Lab Extensions</h1>
+        <p>Welcome back, <?=$_SESSION['Username']?>!</p>
         <canvas id="canvas" width="1000" height="500" style="border:1px solid #000000;"></canvas>
         <br>
 
