@@ -61,7 +61,7 @@ form{
 }
 
 .login-input{
-    width:100%;
+    width:90%;
     background:#fff;
     margin-bottom:4%;
     border:1px solid #ccc;
@@ -86,4 +86,7 @@ input[type="submit"]{
 
 input[type="submit"]:hover{
     background:#2288bb;
+}
+form{
+    text-align:center;
 }
