@@ -25,7 +25,7 @@ document.getElementById("replay").onclick = function(){
     dots = []
     redoMove(0)
 }
-
+z
 document.getElementById("sequence").onclick = function(){
     if(sequenceMode){
         sequenceMode = false;

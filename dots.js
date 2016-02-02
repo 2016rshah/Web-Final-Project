@@ -7,7 +7,7 @@ var BLUE = "#567";
 var RED = "#c20030";
 
 var dots = []
-dots.push({x:-50, y:-50, r:RADIUS, c:"black"}) //fix mystery bug when dragging without drawing dot
+dots.push({x:-50, y:-50, r:RADIUS, c:"black", caption:""}) //fix mystery bug when dragging without drawing dot
 
 var KEY_MAP = {37:"left", 38:"up", 39:"right", 40:"down"}
 
@@ -26,6 +26,8 @@ function clearC(){
 function drawCanvas(){
 	drawDots();
 	drawEdges();
+   drawDotLabels();
+   drawEdgeLabels();
 }
 
 //draws new dot
@@ -42,6 +44,40 @@ function drawDots(){
         ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0,2*Math.PI, true);
         ctx.fill()
     }
+}
+
+function drawDotLabels(){
+	ctx.font = "10px serif";
+	ctx.fillStyle = "#FF0000";
+
+	for(var i = 0; i < dots.length; i++){
+		ctx.fillText(dots[i].caption, dots[i].x, dots[i].y);
+	}
+}
+
+function drawEdgeLabels(){
+   ctx.font = "10px serif";
+	ctx.fillStyle = "#FF0000";
+   var startX, startY, px0, px1, px2, py0, py1, py2;
+	for(var i = 0; i < edges.length; i++){
+      var edge = edges[i];
+      px0 = dots[edge.di1].x;
+      px1 = edge.curvex;
+      px2 = dots[edge.di2].x;
+      py0 = dots[edges[i].di1].y;
+      py1 = edge.curvey;
+      py2 = dots[edges[i].di2].y;
+      if(edge.curve == "yes"){
+         t = 0.5
+         startX = (1 - t) * (1 - t) * px0 + 2 * (1 - t) * t * px1 + t * t * px2;
+		   startY = (1 - t) * (1 - t) * py0 + 2 * (1 - t) * t * py1 + t * t * py2;
+      }
+      else{
+         startX = (px0 + px2) / 2;
+         startY = (py0 + py2) / 2;
+      }
+		ctx.fillText(edges[i].caption, startX, startY);
+	}
 }
 
 //draws new edges
@@ -336,6 +372,8 @@ function displayDotProperties(coordinates, displayingDot){
 	
 	var propValue;
 	for(var propName in displayingDot){
+      if(propName == "caption")
+         continue;
 		propValue = displayingDot[propName];
 		ctx.fillText(propName + ": " + propValue, xStart, yStart);
 		yStart += yIncrement;
@@ -578,7 +616,7 @@ c.onmouseup = function(e){
 		    clearC()
 		    resetDots()
 		    resetEdges()
-		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"})
+		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red", caption:""})
 		    if(firstDotSet){
 		    	previousDotInSequence = currentDotInSequence;
 			currentDotInSequence = dots.length - 1;

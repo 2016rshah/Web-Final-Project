@@ -32,14 +32,15 @@
 	<input type = text id = 'newProperty'>
 	<button id = 'addProperty' accesskey = 'a'><u>A</u>dd Property</button> 
 
-        <br><br>
+   <br><br>
 
 	Set
 	<select id = "chooseProperty">
 		<option selected disabled hidden value=''></option>
 		<option value='name'>Name</option>
 		<option value='age'>Age</option>
-	</select>
+	   	<option value='caption'>Caption</option>
+   	</select>
 	of
 	<select id = "dotOrEdge">
 		<option selected disabled hidden value=''></option>
