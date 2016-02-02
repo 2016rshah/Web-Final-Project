@@ -17,6 +17,7 @@ if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
  
      <h1>Member Area</h1>
      <p>Thanks for logging in! You are <code><?=$_SESSION['Username']?></code>.</p>
+     <a href="logout.php">Feel free to logout</a>
       
      <?php
 }
@@ -34,14 +35,12 @@ elseif(!empty($_POST['username']) && !empty($_POST['password']))
     $foundUser = False;
     while($row = $result->fetch_assoc()){
       $foundUser = True;
-
-        $email = $row['EmailAddress'];
          
         $_SESSION['Username'] = $username;
         $_SESSION['LoggedIn'] = 1;
          
          //now redirect them where they need to go
-        echo "<script>window.location = '/dots.html'</script>";
+        echo "<script>window.location = 'dots.php'</script>";
 
   } 
     if(!$foundUser)
