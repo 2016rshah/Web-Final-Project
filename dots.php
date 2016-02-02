@@ -56,5 +56,56 @@
         <script src="keyboard_events.js"></script>
         <script src="button_clicks.js"></script>
 	<script src="edge_mode.js"></script>
+
+
+    <form action="index.php" method="post" id="form">
+        <input style="display:none;" id="saveInfo" type="text" name="saveInfo" />
+        <button id="submitButton" type="button" accessKey="s"><u>S</u>ave</button>
+        <button id="loadButton" type="button" accessKey="l"><u>L</u>oad</button>
+    </form>
+
+    <script>
+        document.getElementById("submitButton").onclick = function(e){
+            
+            // alert("something")
+            var dotsString = "["+dots.map(JSON.stringify).toString()+"]"
+            console.log(dotsString)
+
+            document.getElementById("saveInfo").value = dotsString
+            // document.getElementById("saveInfo").value = '[{x:50, y:50, r:RADIUS, c:"red"}]'
+
+            // document.getElementById("saveInfo").value = 'something'
+            document.getElementById("form").submit()
+
+        }
+
+        document.getElementById("loadButton").onclick = function(e){
+            clearC()
+
+
+
+            dots = eval(<?=$_SESSION['Canvas']?>)
+
+
+            console.log(<?=$_SESSION['Canvas']?>)
+
+
+
+            drawDots()
+        }
+    </script>
+
+    <?php 
+        if(strlen($_REQUEST["saveInfo"]) > 1):
+            //technically I think you need to update the session variable here as well, not just db
+            $sql = "UPDATE users SET Canvas = '".$_REQUEST["saveInfo"]."'";
+            //"SELECT * FROM users WHERE Username = '".$username."' AND Password = '".$password."'"
+            if ($conn->query($sql) === TRUE) {
+                echo "Record updated successfully";
+            } else {
+                echo "Error updating record: " . $conn->error;
+            }
+        endif; 
+    ?>
     </body>
 </html>
