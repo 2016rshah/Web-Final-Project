@@ -1,6 +1,7 @@
 document.getElementById("clear").onclick = function(){
     clearC()
     dots = []
+    edges = []
     history = []
 }
 
