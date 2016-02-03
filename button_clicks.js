@@ -1,6 +1,7 @@
 document.getElementById("clear").onclick = function(){
     clearC()
     dots = []
+    edges = []
     history = []
 }
 
@@ -25,6 +26,7 @@ document.getElementById("replay").onclick = function(){
     dots = []
     redoMove(0)
 }
+
 document.getElementById("sequence").onclick = function(){
     if(sequenceMode){
         sequenceMode = false;
@@ -94,6 +96,9 @@ document.getElementById("setProperty").onclick = function(){
 	document.getElementById("chooseProperty").value = '';
 	document.getElementById("dotOrEdge").value = '';
 	document.getElementById("propertyValue").value = '';
+   
+   if(propertyToAdd == "c")
+      return;
 	
 	//uncapitalizing first letter in propertyToAdd
 	propertyToAdd = propertyToAdd.charAt(0).toLowerCase() + propertyToAdd.slice(1);
@@ -119,4 +124,29 @@ document.getElementById("setProperty").onclick = function(){
 
 	clearC();
 	drawCanvas();
+}
+
+document.getElementById("dijkstra").onclick = function(){
+	//dijkstra algorithm
+	//
+	
+	//Locate the two selected dots
+	var numberOfSelectedDots = 0;
+	var dotsSelectedForPath = [];
+	var toContinue = true;
+	for(var i = 0; i < dots.length; i++){
+		if(dots[i].c == "red"){
+			numberOfSelectedDots++;
+			dotsSelectedForPath.push(i);
+		}
+	}
+	if(numberOfSelectedDots != 2){
+		var toContinue = false;
+		alert("You need to select a starting dot and an ending dot");
+	}
+
+	if(toContinue){
+		computeDijkstra(dotsSelectedForPath);
+	}
+	
 }
