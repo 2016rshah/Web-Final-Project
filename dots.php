@@ -27,6 +27,7 @@
 	<button id="sequence" accesskey="s"><u>S</u>equence</button>
 	<button id="spoke" accesskey="e"><u>E</u>dge</button>
 
+    <button id="dijkstra" accessKey="d"><u>D</u>ijkstra</button>
 	<br><br>
 
 	<input type = text id = 'newProperty'>
@@ -39,6 +40,7 @@
 		<option selected disabled hidden value=''></option>
 		<option value='name'>Name</option>
 		<option value='age'>Age</option>
+        <option value='weight'>Weight</option>
 	   	<option value='caption'>Caption</option>
    	</select>
 	of
