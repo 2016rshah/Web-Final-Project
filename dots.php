@@ -10,6 +10,12 @@
             background-color:#567;
             color:#FFF;
           }
+          a{
+            color:yellow;
+          }
+          a:visited{
+            color:yellow;
+          }
           canvas{
             background-color:white;
           }
@@ -17,7 +23,10 @@
     </head>
     <body>
         <h1>Final Project: Dot Lab Extensions</h1>
-        <p>Welcome back, <?=$_SESSION['Username']?>!</p>
+
+        <p><a href="info.php">Click here for instructions</a></p>
+
+
         <canvas id="canvas" width="1000" height="500" style="border:1px solid #000000;"></canvas>
         <br>
 
@@ -60,7 +69,7 @@
         <script src="button_clicks.js"></script>
 	<script src="edge_mode.js"></script>
 
-
+    <br><br>
     <form action="dots.php" method="post" id="form">
         <input style="display:none;" id="saveInfo" type="text" name="saveInfo" />
         <button id="submitButton" type="button" accessKey="s"><u>S</u>ave</button>
@@ -111,13 +120,13 @@
             $sql = "UPDATE users SET Canvas = '".$_REQUEST["saveInfo"]."'";
             //"SELECT * FROM users WHERE Username = '".$username."' AND Password = '".$password."'"
             if ($db->query($sql) === TRUE) {
-                echo "Record updated successfully";
+                // echo "Record updated successfully";
             } else {
-                echo "Error updating record: " . $db->error;
+                // echo "Error updating record: " . $db->error;
             }
         }
         else{
-            echo "Not set";
+            // echo "Not set";
         }
     ?>
     </body>

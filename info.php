@@ -14,6 +14,13 @@
 	  	width: 800px;
 		margin: 0 auto;
 	  }
+	  
+          a{
+            color:yellow;
+          }
+          a:visited{
+            color:yellow;
+          }
         </style>
     </head>
     <body>
@@ -21,7 +28,7 @@
 
 	<center>
         	<!--<button id="continue" accesskey="c"><u>C</u>ontinue</button>-->
-		<a href="dots.html" class="button">Continue</a>
+		<a href="dots.php" class="button">Head home</a>
 	</center>
 	
 	<div id="main">
