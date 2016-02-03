@@ -96,6 +96,9 @@ document.getElementById("setProperty").onclick = function(){
 	document.getElementById("chooseProperty").value = '';
 	document.getElementById("dotOrEdge").value = '';
 	document.getElementById("propertyValue").value = '';
+   
+   if(propertyToAdd == "c")
+      return;
 	
 	//uncapitalizing first letter in propertyToAdd
 	propertyToAdd = propertyToAdd.charAt(0).toLowerCase() + propertyToAdd.slice(1);

@@ -74,17 +74,17 @@ function drawEdges(){
 
 function drawDotLabels(){
 	ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
+	ctx.fillStyle = "#000000";
 	for(var i = 0; i < dots.length; i++){
 		if(dots[i].caption != undefined){
-			ctx.fillText(dots[i].caption, dots[i].x - 30, dots[i].y + 20);
+			ctx.fillText(dots[i].caption, dots[i].x - dots[i].r*1.5, dots[i].y + dots[i].r);
 		}
 	}
 }
 
 function drawEdgeLabels(){
 	ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
+	ctx.fillStyle = "#000000";
 	var startX, startY, px0, px1, px2, py0, py1, py2;
 	for(var i = 0; i < edges.length; i++){
 		if(edges[i].caption != undefined){
@@ -103,7 +103,7 @@ function drawEdgeLabels(){
 				startX = (px0 + px2) / 2;
 				startY = (py0 + py2) / 2;
 			}
-			ctx.fillText(edges[i].caption, startX - 30, startY + 20);
+			ctx.fillText(edges[i].caption, startX, startY);
 		}
 	}
 }
@@ -210,8 +210,8 @@ function moveSpecific(arr, dx, dy, type){
 function findSelectedDot(loc){
     for(var i = 0; i<dots.length; i++){
     //SHOULD PROBABLY MODIFY LATER SO IT IS COMPATIBLE WITH CHANGING RADII
-        if(loc.x > dots[i].x - RADIUS && loc.x < dots[i].x + RADIUS){ //within x threshold
-            if(loc.y > dots[i].y - RADIUS && loc.y < dots[i].y + RADIUS){ //within y threshold
+        if(loc.x > dots[i].x - dots[i].r && loc.x < dots[i].x + dots[i].r){ //within x threshold
+            if(loc.y > dots[i].y - dots[i].r && loc.y < dots[i].y + dots[i].r){ //within y threshold
                 // if(ctrlPressed){
                 //     resetDots()
                 // }
@@ -243,8 +243,8 @@ function findSelectedDot(loc){
 function mouseOverDot(loc){
     for(var i = 0; i<dots.length; i++){
     //SHOULD PROBABLY MODIFY LATER SO IT IS COMPATIBLE WITH CHANGING RADII
-        if(loc.x > dots[i].x - RADIUS && loc.x < dots[i].x + RADIUS){ //within x threshold
-            if(loc.y > dots[i].y - RADIUS && loc.y < dots[i].y + RADIUS){ //within y threshold
+        if(loc.x > dots[i].x - dots[i].r && loc.x < dots[i].x + dots[i].r){ //within x threshold
+            if(loc.y > dots[i].y - dots[i].r && loc.y < dots[i].y + dots[i].r){ //within y threshold
                 return dots[i];
             }
         }
@@ -368,15 +368,17 @@ function locationIsWithinEdgeBounds(loc, edgeElement){
 function displayDotProperties(coordinates, displayingDot){
 	var numAttributes = Object.keys(displayingDot).length;
 
-	var xStart = coordinates.x + 10;
+	var xStart = coordinates.x + displayingDot.r;
 	var yStart = coordinates.y;
 	var yIncrement = 10;
 
 	ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
+	ctx.fillStyle = "#0000FF";
 	
 	var propValue;
 	for(var propName in displayingDot){
+      if(propName == "caption" || propName == "c")
+         continue;
 		propValue = displayingDot[propName];
 		ctx.fillText(propName + ": " + propValue, xStart, yStart);
 		yStart += yIncrement;
@@ -386,15 +388,17 @@ function displayDotProperties(coordinates, displayingDot){
 function displayEdgeProperties(coordinates, displayingEdge){
 	var numNewAttributes = Object.keys(displayingEdge).length;
 
-	var xStart = coordinates.x + 10;
+	var xStart = coordinates.x + displayingEdge.size * 2;
 	var yStart = coordinates.y;
-	var yIncrement = 10;
+	var yIncrement = displayingEdge.size * 2;
 	
 	ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
+	ctx.fillStyle = "#0000FF";
 
 	var propValue;
 	for(var propName in displayingEdge){
+      if(propName == "caption" || propName == "c" || propName == "di1" || propName == "di2")
+         continue;
 		propValue = displayingEdge[propName];
 		ctx.fillText(propName + ": " + propValue, xStart, yStart);
 		yStart += yIncrement;
