@@ -501,9 +501,16 @@ function computeDijkstra(dotsSelectedForPath){
 
 function constructPath(shortestPathInfo, endVertex){
 	var path = [];
-	while(endVertex != shortestPathInfo.startVertex){
-		path.unshift(endVertex);
-		endVertex = shortestPathInfo.predecessors[endVertex];
+	var possiblePath = true;
+	if((shortestPathInfo.predecessors).indexOf(shortestPathInfo.startVertex) < 0){
+		alert("No possible path");
+		possiblePath = false;
+	}
+	if(possiblePath){
+		while(endVertex != shortestPathInfo.startVertex){
+			path.unshift(endVertex);
+			endVertex = shortestPathInfo.predecessors[endVertex];
+		}
 	}
 	return path;
 }
@@ -544,7 +551,6 @@ function shortestPath(currentEdges, numVertices, startVertex){
 			}
 		}
 	}
-
 	return{"startVertex": startVertex, "pathLengths": pathLengths, "predecessors": predecessors};
 
 }
