@@ -7,7 +7,7 @@ var BLUE = "#567";
 var RED = "#c20030";
 
 var dots = []
-dots.push({x:-50, y:-50, r:RADIUS, c:"black", caption:""}) //fix mystery bug when dragging without drawing dot
+dots.push({x:-50, y:-50, r:RADIUS, c:"black"}) //fix mystery bug when dragging without drawing dot
 
 var KEY_MAP = {37:"left", 38:"up", 39:"right", 40:"down"}
 
@@ -26,8 +26,8 @@ function clearC(){
 function drawCanvas(){
 	drawDots();
 	drawEdges();
-   drawDotLabels();
-   drawEdgeLabels();
+	drawDotLabels();
+	drawEdgeLabels();
 }
 
 //draws new dot
@@ -44,40 +44,6 @@ function drawDots(){
         ctx.arc(dots[i].x, dots[i].y, dots[i].r, 0,2*Math.PI, true);
         ctx.fill()
     }
-}
-
-function drawDotLabels(){
-	ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
-
-	for(var i = 0; i < dots.length; i++){
-		ctx.fillText(dots[i].caption, dots[i].x, dots[i].y);
-	}
-}
-
-function drawEdgeLabels(){
-   ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
-   var startX, startY, px0, px1, px2, py0, py1, py2;
-	for(var i = 0; i < edges.length; i++){
-      var edge = edges[i];
-      px0 = dots[edge.di1].x;
-      px1 = edge.curvex;
-      px2 = dots[edge.di2].x;
-      py0 = dots[edges[i].di1].y;
-      py1 = edge.curvey;
-      py2 = dots[edges[i].di2].y;
-      if(edge.curve == "yes"){
-         t = 0.5
-         startX = (1 - t) * (1 - t) * px0 + 2 * (1 - t) * t * px1 + t * t * px2;
-		   startY = (1 - t) * (1 - t) * py0 + 2 * (1 - t) * t * py1 + t * t * py2;
-      }
-      else{
-         startX = (px0 + px2) / 2;
-         startY = (py0 + py2) / 2;
-      }
-		ctx.fillText(edges[i].caption, startX, startY);
-	}
 }
 
 //draws new edges
@@ -103,6 +69,44 @@ function drawEdges(){
 		ctx.setLineDash([0]);
 		ctx.stroke();
 		ctx.closePath();
+	}
+}
+
+function drawDotLabels(){
+	ctx.font = "12px serif";
+	ctx.fillStyle = "#006600";
+	for(var i = 0; i < dots.length; i++){
+		if(dots[i].caption != undefined){
+         var textWidth = ctx.measureText(dots[i].caption).width;
+			ctx.fillText(dots[i].caption, dots[i].x - textWidth/2, dots[i].y + dots[i].r*1.5);
+		}
+	}
+}
+
+function drawEdgeLabels(){
+	ctx.font = "12px serif";
+	ctx.fillStyle = "#006600";
+	var startX, startY, px0, px1, px2, py0, py1, py2;
+	for(var i = 0; i < edges.length; i++){
+		if(edges[i].caption != undefined){
+			px0 = dots[edges[i].di1].x;
+			py0 = dots[edges[i].di1].y;
+			px1 = edges[i].curvex;
+			py1 = edges[i].curvey;
+			px2 = dots[edges[i].di2].x;
+			py2 = dots[edges[i].di2].y;
+			if(edges[i].curve == "yes"){
+				var t = 0.5;
+				startX = (1 - t) * (1 - t) * px0 + 2 * (1 - t) * t * px1 + t * t * px2;
+				startY = (1 - t) * (1 - t) * py0 + 2 * (1 - t) * t * py1 + t * t * py2;
+			}
+			else{
+				startX = (px0 + px2) / 2;
+				startY = (py0 + py2) / 2;
+			}
+         var textWidth = ctx.measureText(edges[i].caption).width;
+			ctx.fillText(edges[i].caption, startX - textWidth/2, startY);
+		}
 	}
 }
 
@@ -208,8 +212,8 @@ function moveSpecific(arr, dx, dy, type){
 function findSelectedDot(loc){
     for(var i = 0; i<dots.length; i++){
     //SHOULD PROBABLY MODIFY LATER SO IT IS COMPATIBLE WITH CHANGING RADII
-        if(loc.x > dots[i].x - RADIUS && loc.x < dots[i].x + RADIUS){ //within x threshold
-            if(loc.y > dots[i].y - RADIUS && loc.y < dots[i].y + RADIUS){ //within y threshold
+        if(loc.x > dots[i].x - dots[i].r && loc.x < dots[i].x + dots[i].r){ //within x threshold
+            if(loc.y > dots[i].y - dots[i].r && loc.y < dots[i].y + dots[i].r){ //within y threshold
                 // if(ctrlPressed){
                 //     resetDots()
                 // }
@@ -241,8 +245,8 @@ function findSelectedDot(loc){
 function mouseOverDot(loc){
     for(var i = 0; i<dots.length; i++){
     //SHOULD PROBABLY MODIFY LATER SO IT IS COMPATIBLE WITH CHANGING RADII
-        if(loc.x > dots[i].x - RADIUS && loc.x < dots[i].x + RADIUS){ //within x threshold
-            if(loc.y > dots[i].y - RADIUS && loc.y < dots[i].y + RADIUS){ //within y threshold
+        if(loc.x > dots[i].x - dots[i].r && loc.x < dots[i].x + dots[i].r){ //within x threshold
+            if(loc.y > dots[i].y - dots[i].r && loc.y < dots[i].y + dots[i].r){ //within y threshold
                 return dots[i];
             }
         }
@@ -252,7 +256,10 @@ function mouseOverDot(loc){
 
 function findSelectedLine(loc){
 	//[(di1: 1, di2: 2, c: "red")]
-	
+	if(!ctrlPressed){
+		resetDots();
+		resetEdges();
+	}
 	for(var i = 0; i < edges.length; i++){
 		//console.log(i);
 		if(edges[i].curve != "yes" && locationIsWithinEdgeBounds(loc, edges[i])){
@@ -320,7 +327,7 @@ function locNearCurve(px0, py0, px1, py1, px2, py2, n1, n2){
 		var tempx = (1 - t) * (1 - t) * px0 + 2 * (1 - t) * t * px1 + t * t * px2;
 		var tempy = (1 - t) * (1 - t) * py0 + 2 * (1 - t) * t * py1 + t * t * py2;
 		var tempdistance = Math.sqrt((n1 - tempx) * (n1 - tempx) + (n2 - tempy) * (n2 - tempy));
-		console.log("TEMP DISTANCE: " + tempdistance);
+		//console.log("TEMP DISTANCE: " + tempdistance);
 		if(tempdistance < EDGEWIDTH){
 			return true;
 		}
@@ -363,16 +370,16 @@ function locationIsWithinEdgeBounds(loc, edgeElement){
 function displayDotProperties(coordinates, displayingDot){
 	var numAttributes = Object.keys(displayingDot).length;
 
-	var xStart = coordinates.x + 10;
+	var xStart = coordinates.x + displayingDot.r;
 	var yStart = coordinates.y;
 	var yIncrement = 10;
 
 	ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
+	ctx.fillStyle = "#0000FF";
 	
 	var propValue;
 	for(var propName in displayingDot){
-      if(propName == "caption")
+      if(propName == "caption" || propName == "c")
          continue;
 		propValue = displayingDot[propName];
 		ctx.fillText(propName + ": " + propValue, xStart, yStart);
@@ -383,15 +390,17 @@ function displayDotProperties(coordinates, displayingDot){
 function displayEdgeProperties(coordinates, displayingEdge){
 	var numNewAttributes = Object.keys(displayingEdge).length;
 
-	var xStart = coordinates.x + 10;
+	var xStart = coordinates.x + displayingEdge.size * 2;
 	var yStart = coordinates.y;
-	var yIncrement = 10;
+	var yIncrement = displayingEdge.size * 2;
 	
 	ctx.font = "10px serif";
-	ctx.fillStyle = "#FF0000";
+	ctx.fillStyle = "#0000FF";
 
 	var propValue;
 	for(var propName in displayingEdge){
+      if(propName == "caption" || propName == "c" || propName == "di1" || propName == "di2")
+         continue;
 		propValue = displayingEdge[propName];
 		ctx.fillText(propName + ": " + propValue, xStart, yStart);
 		yStart += yIncrement;
@@ -439,6 +448,119 @@ function toggleEdgesInEdgeMode(dotSet1, dotSet2){
 		}
 	}
 }
+
+function computeDijkstra(dotsSelectedForPath){
+	//Set up adjacency matrix
+	var _ = Infinity;
+	var numberOfVertices = dots.length;
+	var e = [];
+	for(var i = 0; i < dots.length; i++){
+		var adjacentToThis = [];
+		for(var j = 0; j < dots.length; j++){
+			adjacentToThis.push(_);
+		}
+		e.push(adjacentToThis);
+	}
+
+	for(var i = 0; i < edges.length; i++){
+		if(edges[i].weight != undefined){
+			e[edges[i].di1][edges[i].di2] = parseInt(edges[i].weight);
+			e[edges[i].di2][edges[i].di1] = parseInt(edges[i].weight);
+		}
+		else{
+			e[edges[i].di1][edges[i].di2] = edges[i].size;
+			e[edges[i].di2][edges[i].di1] = edges[i].size;
+		}
+	}
+
+	console.log(e);
+	//console.log(e[0][0]);
+	var shortestPathInfo = shortestPath(e, numberOfVertices, dotsSelectedForPath[0]);
+	console.log(shortestPathInfo);
+
+	var pathStartToEnd = constructPath(shortestPathInfo, dotsSelectedForPath[1]);
+	console.log(pathStartToEnd);
+	resetEdges();
+	
+	//set edges on path to red
+	var startOfEdge = dotsSelectedForPath[0];
+	var endOfEdge = -1;
+	for(var i = 0; i < pathStartToEnd.length; i++){
+		//console.log(pathStartToEnd[i]);
+		if(endOfEdge == -1){
+			endOfEdge = pathStartToEnd[i];
+		}
+		else{
+			startOfEdge = endOfEdge;
+			endOfEdge = pathStartToEnd[i];
+		}
+		for(var k = 0; k < edges.length; k++){
+			if((edges[k].di1 == startOfEdge && edges[k].di2 == endOfEdge) || (edges[k].di2 == startOfEdge && edges[k].di1 == endOfEdge)){
+				//console.log("setting");
+				edges[k].c = "red";
+			}
+		}
+	}
+	clearC();
+	drawCanvas();
+}
+
+function constructPath(shortestPathInfo, endVertex){
+	var path = [];
+	var possiblePath = true;
+	if((shortestPathInfo.predecessors).indexOf(shortestPathInfo.startVertex) < 0){
+		alert("No possible path");
+		possiblePath = false;
+	}
+	if(possiblePath){
+		while(endVertex != shortestPathInfo.startVertex){
+			path.unshift(endVertex);
+			endVertex = shortestPathInfo.predecessors[endVertex];
+		}
+	}
+	return path;
+}
+
+function shortestPath(currentEdges, numVertices, startVertex){
+	var done = new Array(numVertices);
+	done[startVertex] = true;
+	var pathLengths = new Array(numVertices);
+	var predecessors = new Array(numVertices);
+	for(var i = 0; i < numVertices; i++){
+		pathLengths[i] = currentEdges[startVertex][i];
+		if(currentEdges[startVertex][i] != Infinity){
+			predecessors[i] = startVertex;
+		}
+	}
+	pathLengths[startVertex] = 0;
+
+	for(var i = 0; i < numVertices - 1; i++){
+		var closest = -1;
+		var closestDistance = Infinity;
+		for(var j = 0; j < numVertices; j++){
+			if(!done[j] && pathLengths[j] < closestDistance){
+				closestDistance = pathLengths[j];
+				closest = j;
+			}
+		}
+		done[closest] = true;
+		
+		for(var j = 0; j < numVertices; j++){
+			if(!done[j] && closest != -1){
+				//console.log(currentEdges);
+				//console.log(closest);
+				var possiblyCloserDistance = pathLengths[closest] + currentEdges[closest][j];
+				if(possiblyCloserDistance < pathLengths[j]){
+					pathLengths[j] = possiblyCloserDistance;
+					predecessors[j] = closest;
+				}
+			}
+		}
+	}
+	return{"startVertex": startVertex, "pathLengths": pathLengths, "predecessors": predecessors};
+
+}
+
 
 var startLoc = {}
 var currLoc = {}
@@ -616,7 +738,7 @@ c.onmouseup = function(e){
 		    clearC()
 		    resetDots()
 		    resetEdges()
-		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red", caption:""})
+		    dots.push({x:coords.x, y:coords.y, r:RADIUS, c:"red"})
 		    if(firstDotSet){
 		    	previousDotInSequence = currentDotInSequence;
 			currentDotInSequence = dots.length - 1;
