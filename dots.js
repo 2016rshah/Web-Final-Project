@@ -73,18 +73,19 @@ function drawEdges(){
 }
 
 function drawDotLabels(){
-	ctx.font = "10px serif";
-	ctx.fillStyle = "#000000";
+	ctx.font = "12px serif";
+	ctx.fillStyle = "#006600";
 	for(var i = 0; i < dots.length; i++){
 		if(dots[i].caption != undefined){
-			ctx.fillText(dots[i].caption, dots[i].x - dots[i].r*1.5, dots[i].y + dots[i].r);
+         var textWidth = ctx.measureText(dots[i].caption).width;
+			ctx.fillText(dots[i].caption, dots[i].x - textWidth/2, dots[i].y + dots[i].r*1.5);
 		}
 	}
 }
 
 function drawEdgeLabels(){
-	ctx.font = "10px serif";
-	ctx.fillStyle = "#000000";
+	ctx.font = "12px serif";
+	ctx.fillStyle = "#006600";
 	var startX, startY, px0, px1, px2, py0, py1, py2;
 	for(var i = 0; i < edges.length; i++){
 		if(edges[i].caption != undefined){
@@ -103,7 +104,8 @@ function drawEdgeLabels(){
 				startX = (px0 + px2) / 2;
 				startY = (py0 + py2) / 2;
 			}
-			ctx.fillText(edges[i].caption, startX, startY);
+         var textWidth = ctx.measureText(edges[i].caption).width;
+			ctx.fillText(edges[i].caption, startX - textWidth/2, startY);
 		}
 	}
 }
