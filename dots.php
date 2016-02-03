@@ -74,6 +74,7 @@
         <input style="display:none;" id="saveInfo" type="text" name="saveInfo" />
         <button id="submitButton" type="button" accessKey="s"><u>S</u>ave</button>
         <button id="loadButton" type="button" accessKey="l"><u>L</u>oad</button>
+        <button id="logout" type="button" accessKey="g" onclick="window.location.href='logout.php'">Lo<u>g</u>out</button>
     </form>
 
     <script>
