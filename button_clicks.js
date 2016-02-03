@@ -121,3 +121,28 @@ document.getElementById("setProperty").onclick = function(){
 	clearC();
 	drawCanvas();
 }
+
+document.getElementById("dijkstra").onclick = function(){
+	//dijkstra algorithm
+	//
+	
+	//Locate the two selected dots
+	var numberOfSelectedDots = 0;
+	var dotsSelectedForPath = [];
+	var toContinue = true;
+	for(var i = 0; i < dots.length; i++){
+		if(dots[i].c == "red"){
+			numberOfSelectedDots++;
+			dotsSelectedForPath.push(i);
+		}
+	}
+	if(numberOfSelectedDots != 2){
+		var toContinue = false;
+		alert("You need to select a starting dot and an ending dot");
+	}
+
+	if(toContinue){
+		computeDijkstra(dotsSelectedForPath);
+	}
+	
+}
